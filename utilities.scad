@@ -26,6 +26,9 @@ function angle(v) = angleOfNormalizedVector(normalized(v));
 function angleBetweenTwoPoints(a, b) = angle(normalized(b-a));
 
 
+function size_x(size) = ((len(size) > 1)? size[0] : size);
+function size_y(size) = ((len(size) > 1)? size[1] : size);
+
 CENTER = 0;
 LEFT = -0.5;
 RIGHT = 0.5;

@@ -23,6 +23,8 @@ M5 = 5*mm;
 M6 = 6*mm;
 M8 = 8*mm;
 
+TAU = 6.2831853071; //2*PI, see http://tauday.com/
+PI = TAU/2;
 
 // When a small distance is needed to overlap shapes for boolean cutting, etc.
 epsilon = 0.01*mm;
