@@ -18,7 +18,7 @@ ellipse() {
 */
 
 
-use <../../utilities.scad>;
+use <../../utilities/utilities.scad>;
 use <../../layouts.scad>;
 
 regularShapes();
@@ -46,7 +46,8 @@ grid(105,105,true,4)
   color("Maroon") pieSlice([50,20],45,270);
 
   // donut slice
-  color("Aquamarine") donutSlice(20,50,0,350);
+ // color("Aquamarine") 
+donutSlice(20,50,0,350);
   color("Aquamarine") donutSlice(30,50,190,270);
   color("Aquamarine") donutSlice([50,20],50,180,270);
   color("Aquamarine") donutSlice([20,30],[50,40],0,270);
@@ -145,11 +146,10 @@ module ellipsePart(width,height,numQuarters)
 
 module donutSlice(innerSize,outerSize, start_angle, end_angle) 
 {   
-    difference()
-    {
+    difference(){
         pieSlice(outerSize, start_angle, end_angle);
         if(len(innerSize) > 1) ellipse(innerSize[0]*2,innerSize[1]*2);
-        else circle(innerSize);
+        else cylinder(r=innerSize, h=5, center=true);
     }
 }
 
