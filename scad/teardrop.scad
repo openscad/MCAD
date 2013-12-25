@@ -25,21 +25,17 @@ module teardrop(radius, length, angle) {
 		linear_extrude(height = length, center = true, convexity = radius, twist = 0)
 			circle(r = radius, center = true, $fn = 30);
 		linear_extrude(height = length, center = true, convexity = radius, twist = 0)
-			projection(cut = false) rotate([0, -angle, 0]) translate([0, 0, radius * sin(45) * 1.5]) cylinder(h = radius * sin(45), r1 = radius * sin(45), r2 = 0, center = true, $fn = 30);
+			projection(cut = false) 
+				rotate([0, -angle, 0]) 
+					translate([0, 0, radius * sin(45) * 1.5]) 
+						cylinder(h = radius * sin(45), r1 = radius * sin(45), r2 = 0, center = true, $fn = 30);
 	}
-		
-	//I worked this portion out when a bug was causing the projection above to take FOREVER to calculate. It works as a replacement, and I figured I'd leave it here just in case.
-	/*
-		#polygon(points = [[radius * cos(-angle / 2), radius * sin(-angle / 2), 0],[radius * cos(-angle / 2), radius * -sin(-angle / 2), 0],[(sin(-angle - 45) + cos(-angle - 45)) * radius, 0, 0]], paths = [[0, 1, 2]]);
-		#polygon(points = [[radius * -cos(-angle / 2), radius * sin(-angle / 2), 0],[radius * -cos(-angle / 2), radius * -sin(-angle / 2), 0],[(sin(-angle - 45) + cos(-angle - 45)) * radius, 0, 0]], paths = [[0, 1, 2]]);
-		#polygon(points = [[radius * sin(-angle / 2), radius * cos(-angle / 2), 0],[radius * sin(-angle / 2), radius * -cos(-angle / 2), 0],[(sin(-angle - 45) + cos(-angle - 45)) * radius, 0, 0]], paths = [[0, 1, 2]]);
-	*/
 }
 
 module test_teardrop(){
-    translate([0, -15, 0]) teardrop(5, 20, 90);
-    translate([0, 0, 0]) teardrop(5, 20, 60);
-    translate([0, 15, 0]) teardrop(5, 20, 45);
+    color("red")translate([0, -15, 0]) teardrop(5, 20, 9);
+    color("blue")translate([0, 0, 0]) teardrop(5, 20, 60);
+    color("green")translate([0, 15, 0]) teardrop(5, 20, 45);
 }
 
-//test_teardrop();
+test_teardrop();
