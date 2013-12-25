@@ -5,7 +5,7 @@
  * Dual licenced under Creative Commons Attribution-Share Alike 3.0 and LGPL2 or later
  */
 
-include <units.scad>
+include <../units.scad>
 
 function distance(a, b) = sqrt( (a[0] - b[0])*(a[0] - b[0]) +
                                 (a[1] - b[1])*(a[1] - b[1]) +
@@ -25,9 +25,13 @@ function angle(v) = angleOfNormalizedVector(normalized(v));
 
 function angleBetweenTwoPoints(a, b) = angle(normalized(b-a));
 
-
+//x and y components of scalar or vector
 function size_x(size) = ((len(size) > 1)? size[0] : size);
 function size_y(size) = ((len(size) > 1)? size[1] : size);
+
+
+function rotatePoint(v,r) = [v[0]*cos(r) + v[1]*sin(r),
+                             v[1]*cos(r) - v[0]*sin(r)];
 
 CENTER = 0;
 LEFT = -0.5;
