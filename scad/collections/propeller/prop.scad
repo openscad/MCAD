@@ -1,57 +1,58 @@
-dinclude <aerofoil.scad>
-include <involute_gears.scad>
-$fn=32;
+include <aerofoil.scad>
+
+$fn=64;
 d=0.01;
-
-
-
-
-//circle(r=10);
-//polygon
-
-
-
+	//Leading edge to training edge distance.
 	 function get_chord(p) = lookup(p, [
-                [ 0, 5 ],
-                [ 0.05, 6 ],
+                [ 0.0, 5 ],
                 [ 0.1, 8.2 ],
                 [ 0.2, 10 ],
+                [ 0.3, 11.2 ],
                 [ 0.4, 12 ],
-                [ 0.6, 12 ],
-                [ 0.75, 9 ],
-                [ 0.9, 6.5 ],
-                [ 1, 4]
+                [ 0.5, 12 ],
+                [ 0.6, 11.2 ],
+                [ 0.7, 10 ],
+                [ 0.8, 8.6 ],
+                [ 0.9, 6.4],
+                [ 1.0, 4]
         ]);
 
+	//depth of airofoil
 	 function get_depth(p) = lookup(p, [
-                [ 0, 20 ],
-		  [0.1,15 ],
-		  [0.125,14 ],
-		  [0.15,12 ],
-		  [0.175,10.5 ],
-		  [0.2,10 ],
-                [ 1, 2 ]
+                [0.00, 18 ],
+                [0.06, 14 ],
+                [0.12, 12 ],
+                [0.15, 11 ],
+                [0.17, 10 ],
+                [0.20, 9 ],
+                [0.23, 8 ],
+                [0.30, 6 ],
+                [1.00, 02 ]
         ]);
 
-	 function get_m(p) = lookup(p, [-=
+	//max camber "curveyness"
+	 function get_mc(p) = lookup(p, [
                 [ 0, 0 ],
 		  [0.2,5 ],
 		  [0.5,20 ],
-                [ 1, 15 ]
+                [ 1, 20 ]
         ]);
 
 //prop();
-module prop(	blades=2,
+
+module prop(	blades=3,
 				hubRadius=10,
 				height=10,
 				stork=2,
 				or=10,
 				ir=8){
+
 	/*color("DarkSlateGray")blades(	h=height+d,
 									or=or,
 									ir=ir,
 									blades=blades, 
 									stork=stork);*/
+
 	mountBearing(blades=blades,or=or,ir=ir);
 
 }
@@ -94,7 +95,7 @@ module blades(	h=12,
 					blades=3,
 					stork=2.5,
 					rootAOA=40,
-					tipAOA=10,
+					tipAOA=15,
 					blade="true"){
 	for ( i = [0 : blades] ){
 		rotate([0,0,360/blades*i]){
@@ -120,9 +121,9 @@ module blades(	h=12,
 bladeassembley();
 module bladeassembley(length=50, 
 				depth=10,
-				sections=20, 
+				sections=50, 
 				rootAOA=40,
-				tipAOA=5,
+				tipAOA=15,
 				rootChord=0.6,
 				tipChord=0.2,
 				rootThickness=1,

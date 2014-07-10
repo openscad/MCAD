@@ -1,4 +1,7 @@
 
+//test
+//airfoilSection();
+
 module airfoil(	length=50, 
 					sections=20, 
 					rootAOA=0,
@@ -173,7 +176,7 @@ module airfoilSection(root_camber_max =10,
             [rxl(03),ryl(03),-length/2],
             [rxl(02),ryl(02),-length/2]           
         ],
-        triangles=[
+        faces=[
             [00,01,48],[47,48,01],
             [01,02,47],[46,47,02],    
             [02,03,46],[45,46,03],           
