@@ -37,7 +37,7 @@ ExtendedCap =0.5;
 CutCap =-0.5;
 
 
-module fromTo(from=[0,0,0], to=[1*m,0,0], size=[1*cm, 1*cm], align=[CENTER, CENTER], material=[0.5, 0.5, 0.5], name="", endExtras=[0,0], endCaps=[FlatCap, FlatCap], rotation=[0,0,0], printString=true) {
+module fromTo(from=[0,0,0], to=[m(1),0,0], size=[cm(1), cm(1)], align=[CENTER, CENTER], material=[0.5, 0.5, 0.5], name="", endExtras=[0,0], endCaps=[FlatCap, FlatCap], rotation=[0,0,0], printString=true) {
 
   angle = angleBetweenTwoPoints(from, to);
   length = distance(from, to) + endCaps[0]*size[0] + endCaps[1]*size[0] + endExtras[0] + endExtras[1];

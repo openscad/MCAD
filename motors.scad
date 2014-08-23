@@ -3,7 +3,7 @@
 // This library is dual licensed under the GPL 3.0 and the GNU Lesser General Public License as per http://creativecommons.org/licenses/LGPL/2.1/ .
 
 include <math.scad>
-
+include <units.scad>
 
 //generates a motor mount for the specified nema standard #.
 module stepper_motor_mount(nema_standard,slide_distance=0, mochup=true, tolerance=0) {
@@ -12,30 +12,31 @@ module stepper_motor_mount(nema_standard,slide_distance=0, mochup=true, toleranc
 	if (nema_standard == 17)
 	{
 		_stepper_motor_mount(
-			motor_shaft_diameter = 0.1968*mm_per_inch,
-			motor_shaft_length = 0.945*mm_per_inch,
-			pilot_diameter = 0.866*mm_per_inch,
-			pilot_length = 0.80*mm_per_inch,
-			mounting_bolt_circle = 1.725*mm_per_inch,
-			bolt_hole_size = 3.5,
-			bolt_hole_distance = 1.220*mm_per_inch,
-			slide_distance = slide_distance,
+			motor_shaft_diameter = inch(0.1968),
+			motor_shaft_length   = inch(0.945),
+			pilot_diameter       = inch(0.866),
+			pilot_length         = inch(0.80),
+			mounting_bolt_circle = inch(1.725),
+			bolt_hole_size       =   mm(3.5),
+			bolt_hole_distance   = inch(1.220),
+			slide_distance       = slide_distance,
 			mochup = mochup,
 			tolerance=tolerance);
 	}
 	if (nema_standard == 23)
 	{
 		_stepper_motor_mount(
-			motor_shaft_diameter = 0.250*mm_per_inch,
-			motor_shaft_length = 0.81*mm_per_inch,
-			pilot_diameter = 1.500*mm_per_inch,
-			pilot_length = 0.062*mm_per_inch,
-			mounting_bolt_circle = 2.625*mm_per_inch,
-			bolt_hole_size = 0.195*mm_per_inch,
-			bolt_hole_distance = 1.856*mm_per_inch,
-			slide_distance = slide_distance,
-			mochup = mochup,
-			tolerance=tolerance);
+			motor_shaft_diameter   = inch(0.250),
+			motor_shaft_length     = inch(0.81),
+			pilot_diameter         = inch(1.500),
+			pilot_length           = inch(0.062),
+			mounting_bolt_circle   = inch(2.625),
+			bolt_hole_size         = inch(0.195),
+			bolt_hole_distance     = inch(1.856),
+			slide_distance         = slide_distance,
+			mochup                 = mochup,
+			tolerance              = tolerance
+        );
 	}
 	
 }
