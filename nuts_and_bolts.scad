@@ -1,4 +1,7 @@
+include <units.scad>
 // Copyright 2010 D1plo1d
+// modified by Ben Howes 2012
+// uses hexagon module from https://github.com/josefprusa/PrusaMendel
 
 // This library is dual licensed under the GPL 3.0 and the GNU Lesser General Public License as per http://creativecommons.org/licenses/LGPL/2.1/ .
 
@@ -137,14 +140,23 @@ COURSE_METRIC_BOLT_MAJOR_THREAD_DIAMETERS =
 	35.940//m36
 ];
 
+module hexagon(height, depth) {
+	boxWidth=height/1.75;
+	union(){
+		cube([boxWidth, height, depth], true);
+		rotate([0,0,60]) cube([boxWidth, height, depth], true);
+		rotate([0,0,-60]) cube([boxWidth, height, depth], true);
+	}
+}
+
 module nutHole(size, units=MM, tolerance = +0.0001, proj = -1)
 {
 	//takes a metric screw/nut size and looksup nut dimensions
-	radius = METRIC_NUT_AC_WIDTHS[size]/2+tolerance;
-	height = METRIC_NUT_THICKNESS[size]+tolerance;
+	radius = METRIC_NUT_AC_WIDTHS[size]+2*tolerance;
+	height = METRIC_NUT_THICKNESS[size]+tolerance*2;
 	if (proj == -1)
 	{
-		cylinder(r= radius, h=height, $fn = 6, center=[0,0]);
+		translate([0,0,(height/2)-tolerance]) hexagon(height=radius, depth=height);
 	}
 	if (proj == 1)
 	{
@@ -166,8 +178,8 @@ module boltHole(size, units=MM, length, tolerance = +0.0001, proj = -1)
 
 	if (proj == -1)
 	{
-	translate([0, 0, -capHeight])
-		cylinder(r= capRadius, h=capHeight);
+	translate([0, 0, -capHeight-epsilon])
+		cylinder(r= capRadius, h=capHeight+2*epsilon);
 	cylinder(r = radius, h = length);
 	}
 	if (proj == 1)

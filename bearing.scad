@@ -38,6 +38,7 @@ function bearingDimensions(model) =
   model == 608 ? [8*mm, 22*mm, 7*mm]:
   model == 623 ? [3*mm, 10*mm, 4*mm]:
   model == 624 ? [4*mm, 13*mm, 5*mm]:
+  model == 626 ? [6*mm, 19*mm, 6*mm]:
   model == 627 ? [7*mm, 22*mm, 7*mm]:
   model == 688 ? [8*mm, 16*mm, 4*mm]:
   model == 698 ? [8*mm, 19*mm, 6*mm]:
@@ -84,7 +85,7 @@ module bearing(pos=[0,0,0], angle=[0,0,0], model=SkateBearing, outline=false,
           cylinder(r=od/2, h=h,  $fs = 0.01);
           color(holeMaterial)
             translate([0,0,-10*epsilon])
-              cylinder(r=id/2, h=h+20*epsilon,  $fs = 0.01);
+              cylinder(r=(id/2)+epsilon, h=h+20*epsilon,  $fs = 0.01);
         }
     }
   }

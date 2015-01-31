@@ -135,7 +135,7 @@ Nema17 = [
                 [NemaRoundExtrusionDiameter, 22*mm], 
                 [NemaRoundExtrusionHeight, 1.9*mm], 
                 [NemaAxleDiameter, 5*mm], 
-                [NemaFrontAxleLength, 18*mm], 
+                [NemaFrontAxleLength, 21*mm], 
                 [NemaBackAxleLength, 15*mm],
                 [NemaAxleFlatDepth, 0.5*mm],
                 [NemaAxleFlatLengthFront, 15*mm],
@@ -186,6 +186,43 @@ Nema34 = [
                 [NemaAxleFlatLengthBack, 25*mm]
          ];
 
+NemaDefinitions = [
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  Nema08,
+  -1,
+  -1,
+  Nema11,
+  -1,
+  -1,
+  Nema14,
+  -1,
+  -1,
+  Nema17,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  Nema23,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  Nema34 
+];
 
 
 function motorWidth(model=Nema23) = lookup(NemaSideSize, model);
@@ -194,36 +231,38 @@ function motorLength(model=Nema23, size=NemaMedium) = lookup(size, model);
 
 module motor(model=Nema23, size=NemaMedium, dualAxis=false, pos=[0,0,0], orientation = [0,0,0]) {
 
-  length = lookup(size, model);
+  motorDef = NemaDefinitions[model];
+  echo(NemaDefinitions[14]);
+  length = lookup(size, motorDef);
 
-  echo(str("  Motor: Nema",lookup(NemaModel, model),", length= ",length,"mm, dual axis=",dualAxis));
+  echo(str("  Motor: Nema",lookup(NemaModel, motorDef),", length= ",length,"mm, dual axis=",dualAxis));
 
   stepperBlack    = BlackPaint;
   stepperAluminum = Aluminum;
 
-  side = lookup(NemaSideSize, model);
+  side = lookup(NemaSideSize, motorDef);
 
-  cutR = lookup(NemaMountingHoleCutoutRadius, model);
-  lip = lookup(NemaMountingHoleLip, model);
-  holeDepth = lookup(NemaMountingHoleDepth, model);
+  cutR = lookup(NemaMountingHoleCutoutRadius, motorDef);
+  lip = lookup(NemaMountingHoleLip, motorDef);
+  holeDepth = lookup(NemaMountingHoleDepth, motorDef);
 
-  axleLengthFront = lookup(NemaFrontAxleLength, model);
-  axleLengthBack = lookup(NemaBackAxleLength, model);
-  axleRadius = lookup(NemaAxleDiameter, model) * 0.5;
+  axleLengthFront = lookup(NemaFrontAxleLength, motorDef);
+  axleLengthBack = lookup(NemaBackAxleLength, motorDef);
+  axleRadius = lookup(NemaAxleDiameter, motorDef) * 0.5;
 
-  extrSize = lookup(NemaRoundExtrusionHeight, model);
-  extrRad = lookup(NemaRoundExtrusionDiameter, model) * 0.5;
+  extrSize = lookup(NemaRoundExtrusionHeight, motorDef);
+  extrRad = lookup(NemaRoundExtrusionDiameter, motorDef) * 0.5;
 
-  holeDist = lookup(NemaDistanceBetweenMountingHoles, model) * 0.5;
-  holeRadius = lookup(NemaMountingHoleDiameter, model) * 0.5;
+  holeDist = lookup(NemaDistanceBetweenMountingHoles, motorDef) * 0.5;
+  holeRadius = lookup(NemaMountingHoleDiameter, motorDef) * 0.5;
 
   mid = side / 2;
 
-  roundR = lookup(NemaEdgeRoundingRadius, model);
+  roundR = lookup(NemaEdgeRoundingRadius, motorDef);
 
-  axleFlatDepth = lookup(NemaAxleFlatDepth, model);
-  axleFlatLengthFront = lookup(NemaAxleFlatLengthFront, model);
-  axleFlatLengthBack = lookup(NemaAxleFlatLengthBack, model);
+  axleFlatDepth = lookup(NemaAxleFlatDepth, motorDef);
+  axleFlatLengthFront = lookup(NemaAxleFlatLengthFront, motorDef);
+  axleFlatLengthBack = lookup(NemaAxleFlatLengthBack, motorDef);
 
   color(stepperBlack){
     translate(pos) rotate(orientation) {
@@ -305,9 +344,3 @@ module motor(model=Nema23, size=NemaMedium, dualAxis=false, pos=[0,0,0], orienta
     }
   }
 }
-
-module roundedBox(size, edgeRadius) {
-    cube(size);
-
-}
-
