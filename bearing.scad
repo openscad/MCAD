@@ -14,13 +14,13 @@ include <materials.scad>
 
 module test_bearing(){
     bearing();
-    bearing(pos=[5*cm, 0,0], angle=[90,0,0]);
-    bearing(pos=[-2.5*cm, 0,0], model=688);
+    bearing(pos=[cm(5), 0,0], angle=[90,0,0]);
+    bearing(pos=[cm(-2.5), 0,0], model=688);
 }
 
 module test_bearing_hole(){
     difference(){
-      translate([0, 0, 3.5]) cube(size=[30, 30, 7-10*epsilon], center=true);
+      translate([0, 0, 3.5]) cube(size=[30, 30, 7-10*MCAD_EPSILON], center=true);
       bearing(outline=true);
     }
 }
@@ -35,13 +35,13 @@ SkateBearing = 608;
 // Bearing dimensions
 // model == XXX ? [inner dia, outer dia, width]:
 function bearingDimensions(model) =
-  model == 608 ? [8*mm, 22*mm, 7*mm]:
-  model == 623 ? [3*mm, 10*mm, 4*mm]:
-  model == 624 ? [4*mm, 13*mm, 5*mm]:
-  model == 627 ? [7*mm, 22*mm, 7*mm]:
-  model == 688 ? [8*mm, 16*mm, 4*mm]:
-  model == 698 ? [8*mm, 19*mm, 6*mm]:
-  [8*mm, 22*mm, 7*mm]; // this is the default
+  model == 608 ? [mm(8), mm(22), mm(7)]:
+  model == 623 ? [mm(3), mm(10), mm(4)]:
+  model == 624 ? [mm(4), mm(13), mm(5)]:
+  model == 627 ? [mm(7), mm(22), mm(7)]:
+  model == 688 ? [mm(8), mm(16), mm(4)]:
+  model == 698 ? [mm(8), mm(19), mm(6)]:
+  [mm(8), mm(22), mm(7)]; // this is the default
 
 
 function bearingWidth(model) = bearingDimensions(model)[BEARING_WIDTH];
@@ -71,8 +71,8 @@ module bearing(pos=[0,0,0], angle=[0,0,0], model=SkateBearing, outline=false,
 
         if (outline==false) {
           // Side shields
-          Ring([0,0,-epsilon], outerRim, innerRim, epsilon+midSink, sideMaterial, material);
-          Ring([0,0,w-midSink], outerRim, innerRim, epsilon+midSink, sideMaterial, material);
+          Ring([0,0,-MCAD_EPSILON], outerRim, innerRim, MCAD_EPSILON+midSink, sideMaterial, material);
+          Ring([0,0,w-midSink], outerRim, innerRim, MCAD_EPSILON+midSink, sideMaterial, material);
         }
       }
   }
@@ -83,8 +83,8 @@ module bearing(pos=[0,0,0], angle=[0,0,0], model=SkateBearing, outline=false,
         difference() {
           cylinder(r=od/2, h=h,  $fs = 0.01);
           color(holeMaterial)
-            translate([0,0,-10*epsilon])
-              cylinder(r=id/2, h=h+20*epsilon,  $fs = 0.01);
+            translate([0,0,-10*MCAD_EPSILON])
+              cylinder(r=id/2, h=h+20*MCAD_EPSILON,  $fs = 0.01);
         }
     }
   }

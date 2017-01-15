@@ -56,134 +56,134 @@ NemaLong = NemaC;
 // TODO: The small motors seem to be a bit too long, I picked the size specs from all over the place, is there some canonical reference?
 Nema08 = [
                 [NemaModel, 8],
-                [NemaLengthShort, 33*mm],
-                [NemaLengthMedium, 43*mm],
-                [NemaLengthLong, 43*mm],
-                [NemaSideSize, 20*mm], 
-                [NemaDistanceBetweenMountingHoles, 15.4*mm], 
-                [NemaMountingHoleDiameter, 2*mm], 
-                [NemaMountingHoleDepth, 1.75*mm], 
-                [NemaMountingHoleLip, -1*mm], 
-                [NemaMountingHoleCutoutRadius, 0*mm], 
-                [NemaEdgeRoundingRadius, 2*mm], 
-                [NemaRoundExtrusionDiameter, 16*mm], 
-                [NemaRoundExtrusionHeight, 1.5*mm], 
-                [NemaAxleDiameter, 4*mm], 
-                [NemaFrontAxleLength, 13.5*mm], 
-                [NemaBackAxleLength, 9.9*mm],
-                [NemaAxleFlatDepth, -1*mm],
-                [NemaAxleFlatLengthFront, 0*mm],
-                [NemaAxleFlatLengthBack, 0*mm]
+                [NemaLengthShort,                  mm( 33    )],
+                [NemaLengthMedium,                 mm( 43    )],
+                [NemaLengthLong,                   mm( 43    )],
+                [NemaSideSize,                     mm( 20    )],
+                [NemaDistanceBetweenMountingHoles, mm( 15.4  )],
+                [NemaMountingHoleDiameter,         mm(  2    )],
+                [NemaMountingHoleDepth,            mm(  1.75 )],
+                [NemaMountingHoleLip,              mm(- 1    )],
+                [NemaMountingHoleCutoutRadius,     mm(  0    )],
+                [NemaEdgeRoundingRadius,           mm(  2    )],
+                [NemaRoundExtrusionDiameter,       mm( 16    )],
+                [NemaRoundExtrusionHeight,         mm(  1.5  )],
+                [NemaAxleDiameter,                 mm(  4    )],
+                [NemaFrontAxleLength,              mm( 13.5  )],
+                [NemaBackAxleLength,               mm(  9.9  )],
+                [NemaAxleFlatDepth,                mm(- 1    )],
+                [NemaAxleFlatLengthFront,          mm(  0    )],
+                [NemaAxleFlatLengthBack,           mm(  0    )]
          ];
 
 Nema11 = [
                 [NemaModel, 11],
-                [NemaLengthShort, 32*mm],
-                [NemaLengthMedium, 40*mm],
-                [NemaLengthLong, 52*mm],
-                [NemaSideSize, 28*mm], 
-                [NemaDistanceBetweenMountingHoles, 23*mm], 
-                [NemaMountingHoleDiameter, 2.5*mm], 
-                [NemaMountingHoleDepth, 2*mm], 
-                [NemaMountingHoleLip, -1*mm], 
-                [NemaMountingHoleCutoutRadius, 0*mm], 
-                [NemaEdgeRoundingRadius, 2.5*mm], 
-                [NemaRoundExtrusionDiameter, 22*mm], 
-                [NemaRoundExtrusionHeight, 1.8*mm], 
-                [NemaAxleDiameter, 5*mm], 
-                [NemaFrontAxleLength, 13.7*mm], 
-                [NemaBackAxleLength, 10*mm],
-                [NemaAxleFlatDepth, 0.5*mm],
-                [NemaAxleFlatLengthFront, 10*mm],
-                [NemaAxleFlatLengthBack, 9*mm]
+                [NemaLengthShort,                  mm( 32   )],
+                [NemaLengthMedium,                 mm( 40   )],
+                [NemaLengthLong,                   mm( 52   )],
+                [NemaSideSize,                     mm( 28   )],
+                [NemaDistanceBetweenMountingHoles, mm( 23   )],
+                [NemaMountingHoleDiameter,         mm(  2.5 )],
+                [NemaMountingHoleDepth,            mm(  2   )],
+                [NemaMountingHoleLip,              mm(- 1   )],
+                [NemaMountingHoleCutoutRadius,     mm(  0   )],
+                [NemaEdgeRoundingRadius,           mm(  2.5 )],
+                [NemaRoundExtrusionDiameter,       mm( 22   )],
+                [NemaRoundExtrusionHeight,         mm(  1.8 )],
+                [NemaAxleDiameter,                 mm(  5   )],
+                [NemaFrontAxleLength,              mm( 13.7 )],
+                [NemaBackAxleLength,               mm( 10   )],
+                [NemaAxleFlatDepth,                mm(  0.5 )],
+                [NemaAxleFlatLengthFront,          mm( 10   )],
+                [NemaAxleFlatLengthBack,           mm(  9   )]
          ];
 
 Nema14 = [
                 [NemaModel, 14],
-                [NemaLengthShort, 26*mm], 
-                [NemaLengthMedium, 28*mm], 
-                [NemaLengthLong, 34*mm], 
-                [NemaSideSize, 35.3*mm], 
-                [NemaDistanceBetweenMountingHoles, 26*mm], 
-                [NemaMountingHoleDiameter, 3*mm], 
-                [NemaMountingHoleDepth, 3.5*mm], 
-                [NemaMountingHoleLip, -1*mm], 
-                [NemaMountingHoleCutoutRadius, 0*mm], 
-                [NemaEdgeRoundingRadius, 5*mm], 
-                [NemaRoundExtrusionDiameter, 22*mm], 
-                [NemaRoundExtrusionHeight, 1.9*mm], 
-                [NemaAxleDiameter, 5*mm], 
-                [NemaFrontAxleLength, 18*mm], 
-                [NemaBackAxleLength, 10*mm],
-                [NemaAxleFlatDepth, 0.5*mm],
-                [NemaAxleFlatLengthFront, 15*mm],
-                [NemaAxleFlatLengthBack, 9*mm]
+                [NemaLengthShort,                  mm( 26   )],
+                [NemaLengthMedium,                 mm( 28   )],
+                [NemaLengthLong,                   mm( 34   )],
+                [NemaSideSize,                     mm( 35.3 )],
+                [NemaDistanceBetweenMountingHoles, mm( 26   )],
+                [NemaMountingHoleDiameter,         mm(  3   )],
+                [NemaMountingHoleDepth,            mm(  3.5 )],
+                [NemaMountingHoleLip,              mm(- 1   )],
+                [NemaMountingHoleCutoutRadius,     mm(  0   )],
+                [NemaEdgeRoundingRadius,           mm(  5   )],
+                [NemaRoundExtrusionDiameter,       mm( 22   )],
+                [NemaRoundExtrusionHeight,         mm(  1.9 )],
+                [NemaAxleDiameter,                 mm(  5   )],
+                [NemaFrontAxleLength,              mm( 18   )],
+                [NemaBackAxleLength,               mm( 10   )],
+                [NemaAxleFlatDepth,                mm(  0.5 )],
+                [NemaAxleFlatLengthFront,          mm( 15   )],
+                [NemaAxleFlatLengthBack,           mm(  9   )]
          ];
 
 Nema17 = [
                 [NemaModel, 17],
-                [NemaLengthShort, 33*mm],
-                [NemaLengthMedium, 39*mm],
-                [NemaLengthLong, 47*mm],
-                [NemaSideSize, 42.20*mm], 
-                [NemaDistanceBetweenMountingHoles, 31.04*mm], 
-                [NemaMountingHoleDiameter, 4*mm], 
-                [NemaMountingHoleDepth, 4.5*mm], 
-                [NemaMountingHoleLip, -1*mm], 
-                [NemaMountingHoleCutoutRadius, 0*mm], 
-                [NemaEdgeRoundingRadius, 7*mm], 
-                [NemaRoundExtrusionDiameter, 22*mm], 
-                [NemaRoundExtrusionHeight, 1.9*mm], 
-                [NemaAxleDiameter, 5*mm], 
-                [NemaFrontAxleLength, 18*mm], 
-                [NemaBackAxleLength, 15*mm],
-                [NemaAxleFlatDepth, 0.5*mm],
-                [NemaAxleFlatLengthFront, 15*mm],
-                [NemaAxleFlatLengthBack, 14*mm]
+                [NemaLengthShort,                  mm( 33    )],
+                [NemaLengthMedium,                 mm( 39    )],
+                [NemaLengthLong,                   mm( 47    )],
+                [NemaSideSize,                     mm( 42.20 )],
+                [NemaDistanceBetweenMountingHoles, mm( 31.04 )],
+                [NemaMountingHoleDiameter,         mm(  4    )],
+                [NemaMountingHoleDepth,            mm(  4.5  )],
+                [NemaMountingHoleLip,              mm(- 1    )],
+                [NemaMountingHoleCutoutRadius,     mm(  0    )],
+                [NemaEdgeRoundingRadius,           mm(  7    )],
+                [NemaRoundExtrusionDiameter,       mm( 22    )],
+                [NemaRoundExtrusionHeight,         mm(  1.9  )],
+                [NemaAxleDiameter,                 mm(  5    )],
+                [NemaFrontAxleLength,              mm( 18    )],
+                [NemaBackAxleLength,               mm( 15    )],
+                [NemaAxleFlatDepth,                mm(  0.5  )],
+                [NemaAxleFlatLengthFront,          mm( 15    )],
+                [NemaAxleFlatLengthBack,           mm( 14    )]
          ];
 
 Nema23 = [
                 [NemaModel, 23],
-                [NemaLengthShort, 39*mm],
-                [NemaLengthMedium, 54*mm],
-                [NemaLengthLong, 76*mm],
-                [NemaSideSize, 56.4*mm], 
-                [NemaDistanceBetweenMountingHoles, 47.14*mm], 
-                [NemaMountingHoleDiameter, 4.75*mm], 
-                [NemaMountingHoleDepth, 5*mm], 
-                [NemaMountingHoleLip, 4.95*mm], 
-                [NemaMountingHoleCutoutRadius, 9.5*mm], 
-                [NemaEdgeRoundingRadius, 2.5*mm], 
-                [NemaRoundExtrusionDiameter, 38.10*mm], 
-                [NemaRoundExtrusionHeight, 1.52*mm], 
-                [NemaAxleDiameter, 6.36*mm], 
-                [NemaFrontAxleLength, 18.80*mm], 
-                [NemaBackAxleLength, 15.60*mm],
-                [NemaAxleFlatDepth, 0.5*mm],
-                [NemaAxleFlatLengthFront, 16*mm],
-                [NemaAxleFlatLengthBack, 14*mm]
+                [NemaLengthShort,                  mm( 39    )],
+                [NemaLengthMedium,                 mm( 54    )],
+                [NemaLengthLong,                   mm( 76    )],
+                [NemaSideSize,                     mm( 56.4  )],
+                [NemaDistanceBetweenMountingHoles, mm( 47.14 )],
+                [NemaMountingHoleDiameter,         mm(  4.75 )],
+                [NemaMountingHoleDepth,            mm(  5    )],
+                [NemaMountingHoleLip,              mm(  4.95 )],
+                [NemaMountingHoleCutoutRadius,     mm(  9.5  )],
+                [NemaEdgeRoundingRadius,           mm(  2.5  )],
+                [NemaRoundExtrusionDiameter,       mm( 38.10 )],
+                [NemaRoundExtrusionHeight,         mm(  1.52 )],
+                [NemaAxleDiameter,                 mm(  6.36 )],
+                [NemaFrontAxleLength,              mm( 18.80 )],
+                [NemaBackAxleLength,               mm( 15.60 )],
+                [NemaAxleFlatDepth,                mm(  0.5  )],
+                [NemaAxleFlatLengthFront,          mm( 16    )],
+                [NemaAxleFlatLengthBack,           mm( 14    )]
          ];
 
 Nema34 = [
                 [NemaModel, 34],
-                [NemaLengthShort, 66*mm],
-                [NemaLengthMedium, 96*mm],
-                [NemaLengthLong, 126*mm],
-                [NemaSideSize, 85*mm], 
-                [NemaDistanceBetweenMountingHoles, 69.58*mm], 
-                [NemaMountingHoleDiameter, 6.5*mm], 
-                [NemaMountingHoleDepth, 5.5*mm], 
-                [NemaMountingHoleLip, 5*mm], 
-                [NemaMountingHoleCutoutRadius, 17*mm], 
-                [NemaEdgeRoundingRadius, 3*mm], 
-                [NemaRoundExtrusionDiameter, 73.03*mm], 
-                [NemaRoundExtrusionHeight, 1.9*mm], 
-                [NemaAxleDiameter, 0.5*inch], 
-                [NemaFrontAxleLength, 37*mm], 
-                [NemaBackAxleLength, 34*mm],
-                [NemaAxleFlatDepth, 1.20*mm],
-                [NemaAxleFlatLengthFront, 25*mm],
-                [NemaAxleFlatLengthBack, 25*mm]
+                [NemaLengthShort,                  mm(  66    )],
+                [NemaLengthMedium,                 mm(  96    )],
+                [NemaLengthLong,                   mm( 126    )],
+                [NemaSideSize,                     mm(  85    )],
+                [NemaDistanceBetweenMountingHoles, mm(  69.58 )],
+                [NemaMountingHoleDiameter,         mm(   6.5  )],
+                [NemaMountingHoleDepth,            mm(   5.5  )],
+                [NemaMountingHoleLip,              mm(   5    )],
+                [NemaMountingHoleCutoutRadius,     mm(  17    )],
+                [NemaEdgeRoundingRadius,           mm(   3    )],
+                [NemaRoundExtrusionDiameter,       mm(  73.03 )],
+                [NemaRoundExtrusionHeight,         mm(   1.9  )],
+                [NemaAxleDiameter,               inch(   0.5  )],
+                [NemaFrontAxleLength,              mm(  37    )],
+                [NemaBackAxleLength,               mm(  34    )],
+                [NemaAxleFlatDepth,                mm(   1.20 )],
+                [NemaAxleFlatLengthFront,          mm(  25    )],
+                [NemaAxleFlatLengthBack,           mm(  25    )]
          ];
 
 
@@ -259,20 +259,20 @@ module motor(model=Nema23, size=NemaMedium, dualAxis=false, pos=[0,0,0], orienta
 
           // Bolt holes
           color(stepperAluminum, $fs=holeRadius/8) {
-            translate([mid+holeDist,mid+holeDist,-1*mm]) cylinder(h=holeDepth+1*mm, r=holeRadius);
-            translate([mid-holeDist,mid+holeDist,-1*mm]) cylinder(h=holeDepth+1*mm, r=holeRadius);
-            translate([mid+holeDist,mid-holeDist,-1*mm]) cylinder(h=holeDepth+1*mm, r=holeRadius);
-            translate([mid-holeDist,mid-holeDist,-1*mm]) cylinder(h=holeDepth+1*mm, r=holeRadius);
+            translate([mid+holeDist,mid+holeDist,mm(-1)]) cylinder(h=holeDepth+mm(1), r=holeRadius);
+            translate([mid-holeDist,mid+holeDist,mm(-1)]) cylinder(h=holeDepth+mm(1), r=holeRadius);
+            translate([mid+holeDist,mid-holeDist,mm(-1)]) cylinder(h=holeDepth+mm(1), r=holeRadius);
+            translate([mid-holeDist,mid-holeDist,mm(-1)]) cylinder(h=holeDepth+mm(1), r=holeRadius);
 
           } 
 
           // Grinded flat
           color(stepperAluminum) {
             difference() {
-              translate([-1*mm, -1*mm, -extrSize]) 
-                cube(size=[side+2*mm, side+2*mm, extrSize + 1*mm]);
-              translate([side/2, side/2, -extrSize - 1*mm]) 
-                cylinder(h=4*mm, r=extrRad);
+              translate([mm(-1), mm(-1), -extrSize])
+                cube(size=[side+mm(2), side+mm(2), extrSize + mm(1)]);
+              translate([side/2, side/2, -extrSize - mm(1)])
+                cylinder(h=mm(4), r=extrRad);
             }
           }
 
@@ -282,22 +282,22 @@ module motor(model=Nema23, size=NemaMedium, dualAxis=false, pos=[0,0,0], orienta
       translate([0, 0, extrSize-axleLengthFront]) color(stepperAluminum) 
         difference() {
                      
-          cylinder(h=axleLengthFront + 1*mm , r=axleRadius, $fs=axleRadius/10);
+          cylinder(h=axleLengthFront + mm(1) , r=axleRadius, $fs=axleRadius/10);
 
           // Flat
           if (axleFlatDepth > 0)
-            translate([axleRadius - axleFlatDepth,-5*mm,-extrSize*mm -(axleLengthFront-axleFlatLengthFront)] ) cube(size=[5*mm, 10*mm, axleLengthFront]);
+            translate([axleRadius - axleFlatDepth,mm(-5),-extrSize -(axleLengthFront-axleFlatLengthFront)] ) cube(size=[mm(5), mm(10), axleLengthFront]);
         }
 
         if (dualAxis) {
           translate([0, 0, length+extrSize]) color(stepperAluminum) 
             difference() {
                      
-              cylinder(h=axleLengthBack + 0*mm, r=axleRadius, $fs=axleRadius/10);
+              cylinder(h=axleLengthBack + mm(0), r=axleRadius, $fs=axleRadius/10);
 
               // Flat
               if (axleFlatDepth > 0)
-                translate([axleRadius - axleFlatDepth,-5*mm,(axleLengthBack-axleFlatLengthBack)]) cube(size=[5*mm, 10*mm, axleLengthBack]);
+                translate([axleRadius - axleFlatDepth,mm(-5),(axleLengthBack-axleFlatLengthBack)]) cube(size=[mm(5), mm(10), axleLengthBack]);
           }
 
         }
