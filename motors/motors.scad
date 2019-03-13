@@ -1,96 +1,109 @@
-// Copyright 2010 D1plo1d
-
-// This library is dual licensed under the GPL 3.0 and the GNU Lesser General Public License as per http://creativecommons.org/licenses/LGPL/2.1/ .
-
 include <MCAD/general/math.scad>
 include <MCAD/units/metric.scad>
 include <MCAD/units/us.scad>
+// Copyright 2010 D1plo1d
 
-//generates a motor mount for the specified nema standard #.
-module stepper_motor_mount(nema_standard,slide_distance=0, mochup=true, tolerance=0) {
-	//dimensions from:
-	// http://www.numberfactory.com/NEMA%20Motor%20Dimensions.htm
-	if (nema_standard == 17)
-	{
-		_stepper_motor_mount(
-			motor_shaft_diameter = 0.1968*length_in,
-			motor_shaft_length = 0.945*length_in,
-			pilot_diameter = 0.866*length_in,
-			pilot_length = 0.80*length_in,
-			mounting_bolt_circle = 1.725*length_in,
-			bolt_hole_size = 3.5,
-			bolt_hole_distance = 1.220*length_in,
-			slide_distance = slide_distance,
-			mochup = mochup,
-			tolerance=tolerance);
-	}
-	if (nema_standard == 23)
-	{
-		_stepper_motor_mount(
-			motor_shaft_diameter = 0.250*length_in,
-			motor_shaft_length = 0.81*length_in,
-			pilot_diameter = 1.500*length_in,
-			pilot_length = 0.062*length_in,
-			mounting_bolt_circle = 2.625*length_in,
-			bolt_hole_size = 0.195*length_in,
-			bolt_hole_distance = 1.856*length_in,
-			slide_distance = slide_distance,
-			mochup = mochup,
-			tolerance=tolerance);
-	}
-	
+// This library is dual licensed under the GPL 3.0 and the GNU Lesser General
+// Public License as per http://creativecommons.org/licenses/LGPL/2.1/ .
+
+// generates a motor mount for the specified nema standard #.
+module stepper_motor_mount(nema_standard,
+                           slide_distance = 0,
+                           mochup = true,
+                           tolerance = 0)
+{
+    // dimensions from:
+    // http://www.numberfactory.com/NEMA%20Motor%20Dimensions.htm
+    if (nema_standard == 17) {
+        _stepper_motor_mount(motor_shaft_diameter = 0.1968 * length_in,
+                             motor_shaft_length = 0.945 * length_in,
+                             pilot_diameter = 0.866 * length_in,
+                             pilot_length = 0.80 * length_in,
+                             mounting_bolt_circle = 1.725 * length_in,
+                             bolt_hole_size = 3.5,
+                             bolt_hole_distance = 1.220 * length_in,
+                             slide_distance = slide_distance,
+                             mochup = mochup,
+                             tolerance = tolerance);
+    }
+    if (nema_standard == 23) {
+        _stepper_motor_mount(motor_shaft_diameter = 0.250 * length_in,
+                             motor_shaft_length = 0.81 * length_in,
+                             pilot_diameter = 1.500 * length_in,
+                             pilot_length = 0.062 * length_in,
+                             mounting_bolt_circle = 2.625 * length_in,
+                             bolt_hole_size = 0.195 * length_in,
+                             bolt_hole_distance = 1.856 * length_in,
+                             slide_distance = slide_distance,
+                             mochup = mochup,
+                             tolerance = tolerance);
+    }
 }
 
-
-//inner mehod for creating a stepper motor mount of any dimensions
-module _stepper_motor_mount(
-	motor_shaft_diameter,
-	motor_shaft_length,
-	pilot_diameter,
-	pilot_length,
-	mounting_bolt_circle,
-	bolt_hole_size,
-	bolt_hole_distance,
-	slide_distance = 0,
-	motor_length = 40, //arbitray - not standardized
-	mochup,
-	tolerance = 0
-)
+// inner mehod for creating a stepper motor mount of any dimensions
+module _stepper_motor_mount(motor_shaft_diameter,
+                            motor_shaft_length,
+                            pilot_diameter,
+                            pilot_length,
+                            mounting_bolt_circle,
+                            bolt_hole_size,
+                            bolt_hole_distance,
+                            slide_distance = 0,
+                            motor_length = 40, // arbitray - not standardized
+                            mochup,
+                            tolerance = 0)
 {
-	union()
-	{
-	// == centered mount points ==
-	//mounting circle inset
-	translate([0,slide_distance/2,0]) circle(r = pilot_diameter/2 + tolerance);
-	square([pilot_diameter,slide_distance],center=true);
-	translate([0,-slide_distance/2,0]) circle(r = pilot_diameter/2 + tolerance);
+    union()
+    {
+        // == centered mount points ==
+        // mounting circle inset
+        translate([ 0, slide_distance / 2, 0 ])
+            circle(r = pilot_diameter / 2 + tolerance);
+        square([ pilot_diameter, slide_distance ], center = true);
+        translate([ 0, -slide_distance / 2, 0 ])
+            circle(r = pilot_diameter / 2 + tolerance);
 
-		//todo: motor shaft hole
-	
-		//mounting screw holes
-		for (x = [-1,1]) for (y = [-1,1])
-		{
-			translate([x*bolt_hole_distance/2,y*bolt_hole_distance/2,0])
-			{
-				translate([0,slide_distance/2,0]) circle(bolt_hole_size/2 + tolerance);
-				translate([0,-slide_distance/2,0]) circle(bolt_hole_size/2 + tolerance);
-				square([bolt_hole_size+2*tolerance,slide_distance],center=true);
-			}
-		}
-		// == motor mock-up ==
-		//motor box
-		if (mochup == true)
-		{
-			%translate([0,0,-5]) cylinder(h = 5, r = pilot_diameter/2);
-			%translate(v=[0,0,-motor_length/2])
-			{
-				cube(size=[bolt_hole_distance+bolt_hole_size+5,bolt_hole_distance+bolt_hole_size+5,motor_length], center = true);
-			}
-			//shaft
-			%translate(v=[0,0,-(motor_length-motor_shaft_length-2)/2])
-			{
-				%cylinder(r=motor_shaft_diameter/2,h=motor_length+motor_shaft_length--1, center = true);
-			}
-		}
-	}
+        // todo: motor shaft hole
+
+        // mounting screw holes
+        for (x = [ -1, 1 ])
+            for (y = [ -1, 1 ]) {
+                translate([
+                    x * bolt_hole_distance / 2,
+                    y * bolt_hole_distance / 2,
+                    0
+                ])
+                {
+                    translate([ 0, slide_distance / 2, 0 ])
+                        circle(bolt_hole_size / 2 + tolerance);
+                    translate([ 0, -slide_distance / 2, 0 ])
+                        circle(bolt_hole_size / 2 + tolerance);
+                    square([ bolt_hole_size + 2 * tolerance, slide_distance ],
+                           center = true);
+                }
+            }
+        // == motor mock-up ==
+        // motor box
+        if (mochup == true) {
+            % translate([ 0, 0, -5 ]) cylinder(h = 5, r = pilot_diameter / 2);
+            % translate(v = [ 0, 0, -motor_length / 2 ])
+            {
+                cube(size =
+                         [
+                             bolt_hole_distance + bolt_hole_size + 5,
+                             bolt_hole_distance + bolt_hole_size + 5,
+                             motor_length
+                         ],
+                     center = true);
+            }
+            // shaft
+            % translate(
+                  v = [ 0, 0, -(motor_length - motor_shaft_length - 2) / 2 ])
+            {
+                % cylinder(r = motor_shaft_diameter / 2,
+                           h = motor_length + motor_shaft_length-- 1,
+                           center = true);
+            }
+        }
+    }
 }

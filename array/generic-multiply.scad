@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2016 Chow Loong Jin <hyperair@debian.org>
  *
@@ -24,12 +25,11 @@
  * @param transformations List of transformations to apply to children()
  * @Param keep_original Whether or not to show the original child
  */
-module mcad_multiply (transformations, keep_original = true)
+module mcad_multiply(transformations, keep_original = true)
 {
     if (keep_original)
-        children ();
+        children();
 
     for (t = transformations)
-        multmatrix (t)
-            children ();
+        multmatrix(t) children();
 }

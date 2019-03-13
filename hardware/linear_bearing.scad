@@ -1,16 +1,17 @@
-//By Glen Chung, 2013.
-//Dual licenced under Creative Commons Attribution-Share Alike 3.0 and LGPL2 or later
 
-include <MCAD/units/metric.scad>;
-include <MCAD/materials/materials.scad>;
+// By Glen Chung, 2013.
+// Dual licenced under Creative Commons Attribution-Share Alike 3.0 and LGPL2 or
+// later
 
-LINEAR_BEARING_dr = 0;  //Inscribed circle
-LINEAR_BEARING_D  = 1;  //Outer diameter
-LINEAR_BEARING_L  = 2;  //Length
-LINEAR_BEARING_B  = 3;  //Outer locking groove B
-LINEAR_BEARING_D1 = 4;  //Outer locking groove D1
-LINEAR_BEARING_W  = 5;  //W
+include<MCAD / units / metric.scad>;
+include<MCAD / materials / materials.scad>;
 
+LINEAR_BEARING_dr = 0; // Inscribed circle
+LINEAR_BEARING_D = 1;  // Outer diameter
+LINEAR_BEARING_L = 2;  // Length
+LINEAR_BEARING_B = 3;  // Outer locking groove B
+LINEAR_BEARING_D1 = 4; // Outer locking groove D1
+LINEAR_BEARING_W = 5;  // W
 
 // Common bearing names
 LinearBearing = "LM8UU";
@@ -38,57 +39,91 @@ model == "LM80UU"  ?   [ 80*length_mm, 120*length_mm, 140*length_mm, 105.5*lengt
 model == "LM100UU" ?   [100*length_mm, 150*length_mm, 150*length_mm, 125.5*length_mm, 145.0*length_mm, 4.15*length_mm]:
 /*model == "LM8UU"   ?*/ [  8*length_mm,  15*length_mm,  24*length_mm,  17.5*length_mm,  14.3*length_mm, 1.10*length_mm];
 
+function linearBearing_dr(model) =
+    linearBearingDimensions(model)[LINEAR_BEARING_dr];
+function linearBearing_D(model) =
+    linearBearingDimensions(model)[LINEAR_BEARING_D];
+function linearBearing_L(model) =
+    linearBearingDimensions(model)[LINEAR_BEARING_L];
+function linearBearing_B(model) =
+    linearBearingDimensions(model)[LINEAR_BEARING_B];
+function linearBearing_D1(model) =
+    linearBearingDimensions(model)[LINEAR_BEARING_D1];
+function linearBearing_W(model) =
+    linearBearingDimensions(model)[LINEAR_BEARING_W];
 
-function linearBearing_dr(model) = linearBearingDimensions(model)[LINEAR_BEARING_dr];
-function linearBearing_D(model)  = linearBearingDimensions(model)[LINEAR_BEARING_D];
-function linearBearing_L(model)  = linearBearingDimensions(model)[LINEAR_BEARING_L];
-function linearBearing_B(model)  = linearBearingDimensions(model)[LINEAR_BEARING_B];
-function linearBearing_D1(model) = linearBearingDimensions(model)[LINEAR_BEARING_D1];
-function linearBearing_W(model)  = linearBearingDimensions(model)[LINEAR_BEARING_W];
+module linearBearing(pos = [ 0, 0, 0 ],
+                     angle = [ 0, 0, 0 ],
+                     model = LinearBearing,
+                     material = Steel,
+                     sideMaterial = BlackPaint)
+{
+    dr = linearBearing_dr(model);
+    D = linearBearing_D(model);
+    L = linearBearing_L(model);
+    B = linearBearing_B(model);
+    D1 = linearBearing_D1(model);
+    W = linearBearing_W(model);
 
-module linearBearing(pos=[0,0,0], angle=[0,0,0], model=LinearBearing,
-		material=Steel, sideMaterial=BlackPaint) {
-	dr = linearBearing_dr(model);
-	D  = linearBearing_D(model);
-	L  = linearBearing_L(model);
-	B  = linearBearing_B(model);
-	D1 = linearBearing_D1(model);
-	W  = linearBearing_W(model);
+    innerRim = dr + (D - dr) * 0.2;
+    outerRim = D - (D - dr) * 0.2;
+    midSink = W / 4;
 
-	innerRim = dr + (D - dr) * 0.2;
-	outerRim = D - (D - dr) * 0.2;
-	midSink = W/4;
+    translate(pos) rotate(angle) union()
+    {
+        color(material) difference()
+        {
+            // Basic ring
+            Ring([ 0, 0, 0 ], D, dr, L, material, material);
 
-	translate(pos) rotate(angle) union() {
-		color(material)
-			difference() {
-				// Basic ring
-				Ring([0,0,0], D, dr, L, material, material);
+            if (W) {
+                // Side shields
+                Ring([ 0, 0, -epsilon ],
+                     outerRim,
+                     innerRim,
+                     L * epsilon + midSink,
+                     sideMaterial,
+                     material);
+                Ring([ 0, 0, L - midSink - epsilon ],
+                     outerRim,
+                     innerRim,
+                     L * epsilon + midSink,
+                     sideMaterial,
+                     material);
+                // Outer locking groove
+                Ring([ 0, 0, (L - B) / 2 ],
+                     D + epsilon,
+                     outerRim + W / 2,
+                     W,
+                     material,
+                     material);
+                Ring([ 0, 0, L - (L - B) / 2 ],
+                     D + epsilon,
+                     outerRim + W / 2,
+                     W,
+                     material,
+                     material);
+            }
+        }
+        if (W)
+            Ring([ 0, 0, midSink ],
+                 D - L * epsilon,
+                 dr + L * epsilon,
+                 L - midSink * 2,
+                 sideMaterial,
+                 sideMaterial);
+    }
 
-				if(W) {
-					// Side shields
-					Ring([0,0,-epsilon], outerRim, innerRim, L*epsilon+midSink, sideMaterial, material);
-					Ring([0,0,L-midSink-epsilon], outerRim, innerRim, L*epsilon+midSink, sideMaterial, material);
-					//Outer locking groove
-					Ring([0,0,(L-B)/2], D+epsilon, outerRim+W/2, W, material, material);
-					Ring([0,0,L-(L-B)/2], D+epsilon, outerRim+W/2, W, material, material);
-				}
-			}
-		if(W)
-			Ring([0,0,midSink], D-L*epsilon, dr+L*epsilon, L-midSink*2, sideMaterial, sideMaterial);
-	}
-
-	module Ring(pos, od, id, h, material, holeMaterial) {
-		color(material) {
-			translate(pos)
-				difference() {
-					cylinder(r=od/2, h=h,  $fn = 100);
-					color(holeMaterial)
-						translate([0,0,-10*epsilon])
-						cylinder(r=id/2, h=h+20*epsilon,  $fn = 100);
-				}
-		}
-	}
-
+    module Ring(pos, od, id, h, material, holeMaterial)
+    {
+        color(material)
+        {
+            translate(pos) difference()
+            {
+                cylinder(r = od / 2, h = h, $fn = 100);
+                color(holeMaterial) translate([ 0, 0, -10 * epsilon ])
+                    cylinder(r = id / 2, h = h + 20 * epsilon, $fn = 100);
+            }
+        }
+    }
 }
-

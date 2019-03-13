@@ -1,3 +1,6 @@
+include <MCAD/fasteners/threads.scad>
+include <MCAD/general/constants.scad>
+include <MCAD/units/metric.scad>
 // ISO 4017 — Hexagon head screws — Product grades A and B
 //
 // d = basic major diameter (nominal diameter) of thread
@@ -5,125 +8,115 @@
 //
 // β = angle of the chamfer (hexagon head)
 
-include <MCAD/units/metric.scad>
-include <MCAD/general/constants.scad>
-include <MCAD/fasteners/threads.scad>
-
 $fn = 36;
 
 module iso_hexagon_head_screw(diameter, length, grade = "A", tolerance = false)
 {
-	dimensions = iso_hexagon_head_screw_dimensions(diameter);
-	hex_side_nom = dimensions[18] / const_sqrt3;
-	hex_side_grade_a = dimensions[19] / const_sqrt3;
-	hex_side_grade_b = dimensions[20] / const_sqrt3;
+    dimensions = iso_hexagon_head_screw_dimensions(diameter);
+    hex_side_nom = dimensions[18] / const_sqrt3;
+    hex_side_grade_a = dimensions[19] / const_sqrt3;
+    hex_side_grade_b = dimensions[20] / const_sqrt3;
 
-	echo(dimensions);
-	echo(dimensions[8] / 2, hex_side_nom);
+    echo(dimensions);
+    echo(dimensions[8] / 2, hex_side_nom);
 
-	if (grade == "A")
-	{
-		if (tolerance)
-		{
-			// Use minimum dimensions
-			linear_extrude(height = dimensions[12])
-			{
-				polygon(points = [
-					[0, dimensions[8] / 2],
-					[dimensions[19] / 2, hex_side_grade_a / 2],
-					[dimensions[19] / 2, -hex_side_grade_a / 2],
-					[0, -dimensions[8] / 2],
-					[-dimensions[19] / 2, -hex_side_grade_a / 2],
-					[-dimensions[19] / 2, hex_side_grade_a / 2]
-					],
-					paths = [[0,1,2,3,4,5]]
-				);
-			}
-			// Ghost in maximum dimensions
-			%linear_extrude(height = dimensions[11])
-			{
-				polygon(points = [
-					[0, hex_side_nom],
-					[dimensions[18] / 2, hex_side_nom / 2],
-					[dimensions[18] / 2, -hex_side_nom / 2],
-					[0, -hex_side_nom],
-					[-dimensions[18] / 2, -hex_side_nom / 2],
-					[-dimensions[18] / 2, hex_side_nom / 2]
-					],
-					paths = [[0,1,2,3,4,5]]
-				);
-			}
-		}
-		// Use nominal dimensions
-		else
-		{
-			linear_extrude(height = dimensions[10])
-			{
-				polygon(points = [
-					[0, hex_side_nom],
-					[dimensions[18] / 2, hex_side_nom / 2],
-					[dimensions[18] / 2, -hex_side_nom / 2],
-					[0, -hex_side_nom],
-					[-dimensions[18] / 2, -hex_side_nom / 2],
-					[-dimensions[18] / 2, hex_side_nom / 2]
-					],
-					paths = [[0,1,2,3,4,5]]
-				);
-			}
-		}
-	}
-	else if (grade == "B")
-	{
-		if (tolerance)
-		{
-			// Use minimum dimensions
-			linear_extrude(height = dimensions[14])
-			{
-				polygon(points = [
-					[0, dimensions[9] / 2],
-					[dimensions[20] / 2, hex_side_grade_b / 2],
-					[dimensions[20] / 2, -hex_side_grade_b / 2],
-					[0, -dimensions[9] / 2],
-					[-dimensions[20] / 2, -hex_side_grade_b / 2],
-					[-dimensions[20] / 2, hex_side_grade_b / 2]
-					],
-					paths = [[0,1,2,3,4,5]]
-				);
-			}
-			// Ghost in nominal/maximum dimensions
-			%linear_extrude(height = dimensions[13])
-			{
-				polygon(points = [
-					[0, hex_side_nom],
-					[dimensions[18] / 2, hex_side_nom / 2],
-					[dimensions[18] / 2, -hex_side_nom / 2],
-					[0, -hex_side_nom],
-					[-dimensions[18] / 2, -hex_side_nom / 2],
-					[-dimensions[18] / 2, hex_side_nom / 2]
-					],
-					paths = [[0,1,2,3,4,5]]
-				);
-			}
-		}
-		// Use nominal dimensions
-		else
-		{
-			linear_extrude(height = dimensions[10])
-			{
-				polygon(points = [
-					[0, hex_side_nom],
-					[dimensions[18] / 2, hex_side_nom / 2],
-					[dimensions[18] / 2, -hex_side_nom / 2],
-					[0, -hex_side_nom],
-					[-dimensions[18] / 2, -hex_side_nom / 2],
-					[-dimensions[18] / 2, hex_side_nom / 2]
-					],
-					paths = [[0,1,2,3,4,5]]
-				);
-			}
-			rotate([180,0,0]) cylinder(h = length, d = dimensions[21], center = false);
-		}
-	}
+    if (grade == "A") {
+        if (tolerance) {
+            // Use minimum dimensions
+            linear_extrude(height = dimensions[12])
+            {
+                polygon(points =
+                            [
+                                [ 0, dimensions[8] / 2 ],
+                                [ dimensions[19] / 2, hex_side_grade_a / 2 ],
+                                [ dimensions[19] / 2, -hex_side_grade_a / 2 ],
+                                [ 0, -dimensions[8] / 2 ],
+                                [ -dimensions[19] / 2, -hex_side_grade_a / 2 ],
+                                [ -dimensions[19] / 2, hex_side_grade_a / 2 ]
+                            ],
+                        paths = [[ 0, 1, 2, 3, 4, 5 ]]);
+            }
+            // Ghost in maximum dimensions
+            % linear_extrude(height = dimensions[11])
+            {
+                polygon(points =
+                            [
+                                [ 0, hex_side_nom ],
+                                [ dimensions[18] / 2, hex_side_nom / 2 ],
+                                [ dimensions[18] / 2, -hex_side_nom / 2 ],
+                                [ 0, -hex_side_nom ],
+                                [ -dimensions[18] / 2, -hex_side_nom / 2 ],
+                                [ -dimensions[18] / 2, hex_side_nom / 2 ]
+                            ],
+                        paths = [[ 0, 1, 2, 3, 4, 5 ]]);
+            }
+        }
+        // Use nominal dimensions
+        else {
+            linear_extrude(height = dimensions[10])
+            {
+                polygon(points =
+                            [
+                                [ 0, hex_side_nom ],
+                                [ dimensions[18] / 2, hex_side_nom / 2 ],
+                                [ dimensions[18] / 2, -hex_side_nom / 2 ],
+                                [ 0, -hex_side_nom ],
+                                [ -dimensions[18] / 2, -hex_side_nom / 2 ],
+                                [ -dimensions[18] / 2, hex_side_nom / 2 ]
+                            ],
+                        paths = [[ 0, 1, 2, 3, 4, 5 ]]);
+            }
+        }
+    } else if (grade == "B") {
+        if (tolerance) {
+            // Use minimum dimensions
+            linear_extrude(height = dimensions[14])
+            {
+                polygon(points =
+                            [
+                                [ 0, dimensions[9] / 2 ],
+                                [ dimensions[20] / 2, hex_side_grade_b / 2 ],
+                                [ dimensions[20] / 2, -hex_side_grade_b / 2 ],
+                                [ 0, -dimensions[9] / 2 ],
+                                [ -dimensions[20] / 2, -hex_side_grade_b / 2 ],
+                                [ -dimensions[20] / 2, hex_side_grade_b / 2 ]
+                            ],
+                        paths = [[ 0, 1, 2, 3, 4, 5 ]]);
+            }
+            // Ghost in nominal/maximum dimensions
+            % linear_extrude(height = dimensions[13])
+            {
+                polygon(points =
+                            [
+                                [ 0, hex_side_nom ],
+                                [ dimensions[18] / 2, hex_side_nom / 2 ],
+                                [ dimensions[18] / 2, -hex_side_nom / 2 ],
+                                [ 0, -hex_side_nom ],
+                                [ -dimensions[18] / 2, -hex_side_nom / 2 ],
+                                [ -dimensions[18] / 2, hex_side_nom / 2 ]
+                            ],
+                        paths = [[ 0, 1, 2, 3, 4, 5 ]]);
+            }
+        }
+        // Use nominal dimensions
+        else {
+            linear_extrude(height = dimensions[10])
+            {
+                polygon(points =
+                            [
+                                [ 0, hex_side_nom ],
+                                [ dimensions[18] / 2, hex_side_nom / 2 ],
+                                [ dimensions[18] / 2, -hex_side_nom / 2 ],
+                                [ 0, -hex_side_nom ],
+                                [ -dimensions[18] / 2, -hex_side_nom / 2 ],
+                                [ -dimensions[18] / 2, hex_side_nom / 2 ]
+                            ],
+                        paths = [[ 0, 1, 2, 3, 4, 5 ]]);
+            }
+            rotate([ 180, 0, 0 ])
+                cylinder(h = length, d = dimensions[21], center = false);
+        }
+    }
 }
 
 // Definitions from ISO 225 — Fasteners — Bolts, screws, studs and
@@ -131,15 +124,15 @@ module iso_hexagon_head_screw(diameter, length, grade = "A", tolerance = false)
 //
 // For a given d:
 // 0:P: pitch of the thread
-// 1:a max: maximum distance from the bearing face to the first full form (full profile) thread (screw)
-// 2:a min: minimum distance from the bearing face to the first full form (full profile) thread (screw)
-// 3:c max: maximum height of the washer-faced portion or thickness of the flange or collar
-// 4:c min: minimum height of the washer-faced portion or thickness of the flange or collar
-// 5:da max: maximum inner diameter of the bearing face
-// 6:dw grade a min: minimum outer diameter of the washer face (bearing face)
-// 7:dw grade b min: minimum outer diameter of the washer face (bearing face)
-// 8:e grade a min: minimum width across corners
-// 9:e grade b min: minimum width across corners
+// 1:a max: maximum distance from the bearing face to the first full form (full
+// profile) thread (screw) 2:a min: minimum distance from the bearing face to
+// the first full form (full profile) thread (screw) 3:c max: maximum height of
+// the washer-faced portion or thickness of the flange or collar 4:c min:
+// minimum height of the washer-faced portion or thickness of the flange or
+// collar 5:da max: maximum inner diameter of the bearing face 6:dw grade a min:
+// minimum outer diameter of the washer face (bearing face) 7:dw grade b min:
+// minimum outer diameter of the washer face (bearing face) 8:e grade a min:
+// minimum width across corners 9:e grade b min: minimum width across corners
 // 10:k nom: nominal height of the head
 // 11:k grade a max: maximum height of the head
 // 12:k grade a min: minimum height of the head
@@ -167,6 +160,6 @@ function iso_hexagon_head_screw_dimensions(diameter) =
   [8*length_mm, 22*length_mm, 7*length_mm]; // this is the default
 
 iso_hexagon_head_screw("M1.6", 20, "A", true);
-translate([5,0,0]) iso_hexagon_head_screw("M1.6", 20, "A", false);
-translate([0,5,0]) iso_hexagon_head_screw("M1.6", 20, "B", true);
-translate([5,5,0]) iso_hexagon_head_screw("M1.6", 20, "B", false);
+translate([ 5, 0, 0 ]) iso_hexagon_head_screw("M1.6", 20, "A", false);
+translate([ 0, 5, 0 ]) iso_hexagon_head_screw("M1.6", 20, "B", true);
+translate([ 5, 5, 0 ]) iso_hexagon_head_screw("M1.6", 20, "B", false);

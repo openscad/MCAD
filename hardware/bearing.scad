@@ -1,17 +1,17 @@
+include <MCAD/materials/materials.scad>
+include <MCAD/units/metric.scad>
 /*
  * Bearing model.
  *
  * Originally by Hans Häggström, 2010.
- * Dual licenced under Creative Commons Attribution-Share Alike 3.0 and LGPL2 or later
+ * Dual licenced under Creative Commons Attribution-Share Alike 3.0 and LGPL2 or
+ * later
  */
 
 /*
 change list 13/6/2013
- added ,604,606,607,628,629,6200,6201,6202,6203,6205,6206   bearing sizes 
+ added ,604,606,607,628,629,6200,6201,6202,6203,6205,6206   bearing sizes
 */
-
-include <MCAD/units/metric.scad>
-include <MCAD/materials/materials.scad>
 
 BEARING_INNER_DIAMETER = 0;
 BEARING_OUTER_DIAMETER = 1;
@@ -23,7 +23,8 @@ SkateBearing = 608;
 // Bearing dimensions
 // model == XXX ? [inner dia, outer dia, width]:
 // http://www.gizmology.net/bearings.htm has some valuable information on that
-// https://www.bearingworks.com/bearing-sizes has a very exhaustive table of dimensions
+// https://www.bearingworks.com/bearing-sizes has a very exhaustive table of
+// dimensions
 function bearingDimensions(model) =
   model == 603 ? [3*mm,  9*mm,  5*mm]:
   model == 604 ? [4*mm, 12*mm,  4*mm]:
@@ -83,54 +84,68 @@ function bearingDimensions(model) =
 
   [8*length_mm, 22*length_mm, 7*length_mm]; // this is the default
 
-
 function bearingWidth(model) = bearingDimensions(model)[BEARING_WIDTH];
-function bearingInnerDiameter(model) = bearingDimensions(model)[BEARING_INNER_DIAMETER];
-function bearingOuterDiameter(model) = bearingDimensions(model)[BEARING_OUTER_DIAMETER];
+function bearingInnerDiameter(model) =
+    bearingDimensions(model)[BEARING_INNER_DIAMETER];
+function bearingOuterDiameter(model) =
+    bearingDimensions(model)[BEARING_OUTER_DIAMETER];
 
-module bearing(pos=[0,0,0], angle=[0,0,0], model=SkateBearing, outline=false,
-                material=Steel, sideMaterial=Brass, center=false) {
-  // Common bearing names
-  model =
-    model == "Skate" ? 608 :
-    model;
+module bearing(pos = [ 0, 0, 0 ],
+               angle = [ 0, 0, 0 ],
+               model = SkateBearing,
+               outline = false,
+               material = Steel,
+               sideMaterial = Brass,
+               center = false)
+{
+    // Common bearing names
+    model = model == "Skate" ? 608 : model;
 
-  w = bearingWidth(model);
-  innerD = outline==false ? bearingInnerDiameter(model) : 0;
-  outerD = bearingOuterDiameter(model);
+    w = bearingWidth(model);
+    innerD = outline == false ? bearingInnerDiameter(model) : 0;
+    outerD = bearingOuterDiameter(model);
 
-  innerRim = innerD + (outerD - innerD) * 0.2;
-  outerRim = outerD - (outerD - innerD) * 0.2;
-  midSink = w * 0.1;
+    innerRim = innerD + (outerD - innerD) * 0.2;
+    outerRim = outerD - (outerD - innerD) * 0.2;
+    midSink = w * 0.1;
 
-  centering_pos = (center) ? [0, 0, -w/2] : [0, 0, 0];
+    centering_pos = (center) ? [ 0, 0, -w / 2 ] : [ 0, 0, 0 ];
 
-  translate(pos) rotate(angle) translate (centering_pos) union() {
-    color(material)
-      difference() {
-        // Basic ring
-        Ring([0,0,0], outerD, innerD, w, material, material);
+    translate(pos) rotate(angle) translate(centering_pos) union()
+    {
+        color(material) difference()
+        {
+            // Basic ring
+            Ring([ 0, 0, 0 ], outerD, innerD, w, material, material);
 
-        if (outline==false) {
-          // Side shields
-          Ring([0,0,-epsilon], outerRim, innerRim, epsilon+midSink, sideMaterial, material);
-          Ring([0,0,w-midSink], outerRim, innerRim, epsilon+midSink, sideMaterial, material);
-        }
-      }
-  }
-
-  module Ring(pos, od, id, h, material, holeMaterial) {
-    color(material) {
-      translate(pos)
-        difference() {
-          cylinder(r=od/2, h=h,  $fs = 0.01);
-          color(holeMaterial)
-            translate([0,0,-10*epsilon])
-              cylinder(r=(id/2)+epsilon, h=h+20*epsilon,  $fs = 0.01);
+            if (outline == false) {
+                // Side shields
+                Ring([ 0, 0, -epsilon ],
+                     outerRim,
+                     innerRim,
+                     epsilon + midSink,
+                     sideMaterial,
+                     material);
+                Ring([ 0, 0, w - midSink ],
+                     outerRim,
+                     innerRim,
+                     epsilon + midSink,
+                     sideMaterial,
+                     material);
+            }
         }
     }
-  }
 
+    module Ring(pos, od, id, h, material, holeMaterial)
+    {
+        color(material)
+        {
+            translate(pos) difference()
+            {
+                cylinder(r = od / 2, h = h, $fs = 0.01);
+                color(holeMaterial) translate([ 0, 0, -10 * epsilon ]) cylinder(
+                    r = (id / 2) + epsilon, h = h + 20 * epsilon, $fs = 0.01);
+            }
+        }
+    }
 }
-
-

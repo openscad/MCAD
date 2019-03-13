@@ -1,14 +1,16 @@
-include <MCAD/materials/visibonecolors.scad>;
 
-module visibonecolorstest()
+include<MCAD / materials / visibonecolors.scad>;
+
+module
+visibonecolorstest()
 {
-	/*
-	216 colors: 12 x 18 matrix
-	Not all colors are tested because OpenSCAD has limited support
-	for variable re-assignment :(
-	'nuff said!
-	*/
-	colors =
+    /*
+    216 colors: 12 x 18 matrix
+    Not all colors are tested because OpenSCAD has limited support
+    for variable re-assignment :(
+    'nuff said!
+    */
+    colors =
 	[PPR, PPM, RRP, MMP, DRP, DMP, LRP, LMP, DPR, DPM, LPR, LPM, 
 	MPR, MPM, OOY, OOR, YYO, RRO, DYO, DRO, LYO, LRO, DOY, DOR, 
 	LOY, LOR, MOY, MOR, SSG, SSY, GGS, YYS, DGS, DYS, LGS, LYS, 
@@ -28,13 +30,12 @@ module visibonecolorstest()
 	ODT, DDT, LDT, PDT, DHT, LHT, ODA, DDA, LDA, PDA, DHA, LHA, 
 	ODV, DDV, LDV, PDV, DHV, LHV, K, OG, DG, LG, PG, W];
 
-	for (i=[1:12])
-	{
-		for (j=[1:18])
-		{
-			color(colors[i*j]) translate([(i-1)*4,(j-1)*4,0]) sphere(2);
-		}
-	}
+    for (i = [1:12]) {
+        for (j = [1:18]) {
+            color(colors[i * j]) translate([ (i - 1) * 4, (j - 1) * 4, 0 ])
+                sphere(2);
+        }
+    }
 }
 
 visibonecolorstest();
