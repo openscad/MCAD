@@ -5,27 +5,30 @@
 * License: LGPL 2.1 or later     *
 *********************************/
 
-/* Todo:
- - implement "dxf" mode
- - implement hole cutout pattern - interference based on hole size, compatible with two sizes above and below the currently set size.
-*/
+// To Do:
+// integrate option to choose between imperial and metric gridbeam
+// integrate option to set beam width (to 1, 1.5, or 2 inch if imperial, or 25, 40 or 50 mm if metric)
+// integrate option to set length (in feet or meter, depending on whether imperial or metric gridbeam ); do this
+// by having the script calculate out the required segments by this method: entered length / entered beam_width = number_of_segments
+// A command to draw a horizontal gridbeam with 1 inch width and 4,5 feet length gridbeam should become: xBeam imperial 1 4,5
+// ------
+
+// A segment starts from 'the middle between 2 holes + the whole itself + the next middle between 2 holes' 
+// Consequently, a segment equals the width of the beam (so one, one-and-a-half, or two inch with imperial gridbeam, or 25, 40 or 50 mm with metric grdbeam)
 
 // zBeam(segments) - create a vertical gridbeam strut 'segments' long
 // xBeam(segments) - create a horizontal gridbeam strut along the X axis
 // yBeam(segments) - create a horizontal gridbeam strut along the Y axis
-// zBolt(segments) - create a bolt 'segments' in length
-// xBolt(segments)
-// yBolt(segments)
-// topShelf(width, depth, corners) - create a shelf suitable for use in gridbeam structures width and depth in 'segments', corners == 1 notches corners
-// bottomShelf(width, depth, corners) - like topShelf, but aligns shelf to underside of beams
-// backBoard(width, height, corners) - create a backing board suitable for use in gridbeam structures width and height in 'segments', corners == 1 notches corners
-// frontBoard(width, height, corners) - like backBoard, but aligns board to front side of beams
-// translateBeam([x, y, z]) - translate gridbeam struts or shelves in X, Y, or Z axes in units 'segments'
 
-// To render the DXF file from the command line:
-// openscad -x connector.dxf -D'mode="dxf"' connector.scad
-mode = "model";
-//mode = "dxf";
+// To draw a bolt in the gridbeam, use the nuts_and_bolts.scad script or metric_fastners.scad script
+// Use following sizes for bolts on imperial gridbeams:
+// 11/32 inch bolt for 1 inch width gridbeam
+// 5/16 inch bolt for 1,5 inch width gridbeam
+// 3/8 inch bolt for 2 inch width gridbeam
+// Use following sizes for bolts on metric gridbeams:
+// 6 mm bolt for 25 mm width gridbeam
+// 9 mm bolt for 40 mm width gridbeam
+// 12 mm bolt for 50 mm width gridbeam
 
 include <units.scad>
 
@@ -37,7 +40,6 @@ beam_wall_thickness = inch * 1/8;
 beam_shelf_thickness = inch * 1/4;
 
 module zBeam(segments) {
-if (mode == "model") {
 	difference() {
 		cube([beam_width, beam_width, beam_width * segments]);
 		for(i = [0 : segments - 1]) {
@@ -54,136 +56,15 @@ if (mode == "model") {
 		cube([beam_width - beam_wall_thickness * 2, beam_width - beam_wall_thickness * 2, beam_width * segments + 2]);
 	}
 }
-}
-
-if (mode == "dxf") {
-
-}
-}
 
 module xBeam(segments) {
-if (mode == "model") {
 	translate([0,0,beam_width])
 	rotate([0,90,0])
 	zBeam(segments);
 }
 
-if (mode == "dxf") {
-
-}
-}
-
 module yBeam(segments) {
-if (mode == "model") {
 	translate([0,0,beam_width])
 	rotate([-90,0,0])
 	zBeam(segments);
-}
-
-if (mode == "dxf") {
-
-}
-}
-
-module zBolt(segments) {
-if (mode == "model") {
-
-}
-
-if (mode == "dxf") {
-
-}
-}
-
-module xBolt(segments) {
-if (mode == "model") {
-}
-
-if (mode == "dxf") {
-
-}
-}
-
-module yBolt(segments) {
-if (mode == "model") {
-}
-
-if (mode == "dxf") {
-
-}
-}
-
-module translateBeam(v) {
-	for (i = [0 : $children - 1]) {
-		translate(v * beam_width) child(i);
-	}
-}
-
-module topShelf(width, depth, corners) {
-if (mode == "model") {
-	difference() {
-		cube([width * beam_width, depth * beam_width, beam_shelf_thickness]);
-
-		if (corners == 1) {
-		translate([-1,  -1,  -1])
-		cube([beam_width + 2, beam_width + 2, beam_shelf_thickness + 2]);
-		translate([-1, (depth - 1) * beam_width, -1])
-		cube([beam_width + 2, beam_width + 2, beam_shelf_thickness + 2]);
-		translate([(width - 1) * beam_width, -1, -1])
-		cube([beam_width + 2, beam_width + 2, beam_shelf_thickness + 2]);
-		translate([(width - 1) * beam_width, (depth - 1) * beam_width, -1])
-		cube([beam_width + 2, beam_width + 2, beam_shelf_thickness + 2]);
-		}
-	}
-}
-
-if (mode == "dxf") {
-
-}
-}
-
-module bottomShelf(width, depth, corners) {
-if (mode == "model") {
-	translate([0,0,-beam_shelf_thickness])
-	topShelf(width, depth, corners);
-}
-
-if (mode == "dxf") {
-
-}
-}
-
-module  backBoard(width, height, corners) {
-if (mode == "model") {
-	translate([beam_width, 0, 0])
-	difference() {
-		cube([beam_shelf_thickness, width * beam_width, height * beam_width]);
-
-		if (corners == 1) {
-		translate([-1,  -1,  -1])
-		cube([beam_shelf_thickness + 2, beam_width + 2, beam_width + 2]);
-		translate([-1, -1, (height - 1) * beam_width])
-		cube([beam_shelf_thickness + 2, beam_width + 2, beam_width + 2]);
-		translate([-1, (width - 1) * beam_width, -1])
-		cube([beam_shelf_thickness + 2, beam_width + 2, beam_width + 2]);
-		translate([-1, (width - 1) * beam_width, (height - 1) * beam_width])
-		cube([beam_shelf_thickness + 2, beam_width + 2, beam_width + 2]);
-		}
-	}
-}
-
-if (mode == "dxf") {
-
-}
-}
-
-module frontBoard(width, height, corners) {
-if (mode == "model") {
-	translate([-beam_width - beam_shelf_thickness, 0, 0])
-	backBoard(width, height, corners);
-}
-
-if (mode == "dxf") {
-
-}
 }
