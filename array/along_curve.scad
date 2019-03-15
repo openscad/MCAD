@@ -17,16 +17,15 @@ include <MCAD/units/metric.scad>
  *        rotation (default: undef)
  * @param axis Axis to rotate around (default: Z)
  */
-module mcad_rotate_multiply (no, angle = undef, axis = Z)
+module mcad_rotate_multiply(no, angle = undef, axis = Z)
 {
-    if (no > 0) {
-        angle = (angle == undef) ? 360 / no : angle;
+  if (no > 0) {
+    angle = (angle == undef) ? 360 / no : angle;
 
-        for (i = [0:no - 1]) {
-            rotate (angle * i, axis)
-            children ();
-        }
+    for (i = [0:no - 1]) {
+      rotate(angle * i, axis) children();
     }
+  }
 }
 
 /**
@@ -34,9 +33,7 @@ module mcad_rotate_multiply (no, angle = undef, axis = Z)
  *
  * @param axis Axis of rotation (default: Z)
  */
-module mcad_duplicate (axis = Z)
+module mcad_duplicate(axis = Z)
 {
-    mcad_rotate_multiply (no = 2, axis = axis)
-        children ();
+  mcad_rotate_multiply(no = 2, axis = axis) children();
 }
-
