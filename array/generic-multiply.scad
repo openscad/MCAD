@@ -24,12 +24,11 @@
  * @param transformations List of transformations to apply to children()
  * @Param keep_original Whether or not to show the original child
  */
-module mcad_multiply (transformations, keep_original = true)
+module mcad_multiply(transformations, keep_original = true)
 {
-    if (keep_original)
-        children ();
+  if (keep_original)
+    children();
 
-    for (t = transformations)
-        multmatrix (t)
-            children ();
+  for (t = transformations)
+    multmatrix(t) children();
 }

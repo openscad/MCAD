@@ -1,0 +1,8 @@
+---
+BasedOnStyle: Mozilla
+ColumnLimit: 80
+IndentWidth: 2
+AccessModifierOffset: -2
+ContinuationIndentWidth: 2
+TabWidth: 2
+UseTab: Never
