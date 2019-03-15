@@ -1,4 +1,3 @@
-
 // OSHW Logo Generator
 // Open Source Hardware Logo : http://oshwlogo.com/
 // -------------------------------------------------
@@ -12,39 +11,31 @@
 //
 // cc-by-sa, pierre-alain dorange, july 2012
 
-module gear_tooth_2d(d)
-{
-    polygon(points = [
-        [ 0.0, 10.0 * d / 72.0 ],
-        [ 0.5 * d, d / 15.0 ],
-        [ 0.5 * d, -d / 15.0 ],
-        [ 0.0, -10.0 * d / 72.0 ]
-    ]);
+module gear_tooth_2d(d) {
+	polygon( points=[ 
+			[0.0,10.0*d/72.0], [0.5*d,d/15.0], 
+			[0.5*d,-d/15.0], [0.0,-10.0*d/72.0] ] );
 }
 
-module oshw_logo_2d(d = 10.0)
-{
-    rotate(-135)
-    {
-        difference()
-        {
-            union()
-            {
-                circle(r = 14.0 * d / 36.0, $fn = 20);
-                for (i = [1:7])
-                    assign(rotAngle = 45 * i + 45) rotate(rotAngle)
-                        gear_tooth_2d(d);
-            }
-            circle(r = 10.0 * d / 72.0, $fn = 20);
-            intersection()
-            {
-                rotate(-20) square(size = [ 10.0 * d / 18.0, 10.0 * d / 18.0 ]);
-                rotate(20) square(size = [ 10.0 * d / 18.0, 10.0 * d / 18.0 ]);
-            }
-        }
-    }
+module oshw_logo_2d(d=10.0) {
+	rotate(-135) {
+		difference() {
+			union() {
+				circle(r=14.0*d/36.0,$fn=20);
+				for(i=[1:7]) assign(rotAngle=45*i+45)
+					rotate(rotAngle) gear_tooth_2d(d);
+			}
+			circle(r=10.0*d/72.0,$fn=20);
+			intersection() {
+	  			rotate(-20) square(size=[10.0*d/18.0,10.0*d/18.0]);
+	  			rotate(20)  square(size=[10.0*d/18.0,10.0*d/18.0]);
+			}
+    		}
+  	}
 }
 
 // usage : oshw_logo_2d(diameter)
 
-linear_extrude(height = 2) oshw_logo_2d(25);
+linear_extrude(height=2)
+	oshw_logo_2d(25);
+
