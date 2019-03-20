@@ -44,6 +44,7 @@ NemaBackAxleLength = 15;
 NemaAxleFlatDepth = 16;
 NemaAxleFlatLengthFront = 17;
 NemaAxleFlatLengthBack = 18;
+NemaFlat = 19;
 
 NemaA = 1;
 NemaB = 2;
@@ -122,6 +123,7 @@ Nema14 = [
 
 Nema17 = [
                 [NemaModel, 17],
+                [NemaFlat, 20.7*mm],
                 [NemaLengthShort, 33*mm],
                 [NemaLengthMedium, 39*mm],
                 [NemaLengthLong, 47*mm],
@@ -225,9 +227,10 @@ module motor(model=Nema23, size=NemaMedium, dualAxis=false, pos=[0,0,0], orienta
   axleFlatLengthFront = lookup(NemaAxleFlatLengthFront, model);
   axleFlatLengthBack = lookup(NemaAxleFlatLengthBack, model);
 
-  color(stepperBlack){
+  {
     translate(pos) rotate(orientation) {
       translate([-mid, -mid, 0]) 
+        color(stepperBlack)
         difference() {          
           cube(size=[side, side, length + extrSize]);
  
