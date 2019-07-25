@@ -10,6 +10,8 @@
  * Version 1.1.  2012-09-07   Corrected to right-hand threads!
  */
 
+include <MCAD/general/constants.scad>
+
 // Examples:
 
 test_threads ();
@@ -234,9 +236,9 @@ module english_thread(diameter=0.25, threads_per_inch=20, length=1,
                       internal=false, n_starts=1)
 {
    // Convert to mm.
-   mm_diameter = diameter*25.4;
-   mm_pitch = (1.0/threads_per_inch)*25.4;
-   mm_length = length*25.4;
+   mm_diameter = diameter*mcad_const_mm_per_inch; // diameter*25.4
+   mm_pitch = (1.0/threads_per_inch)*mcad_const_mm_per_inch;
+   mm_length = length*mcad_const_mm_per_inch;
 
    echo(str("mm_diameter: ", mm_diameter));
    echo(str("mm_pitch: ", mm_pitch));

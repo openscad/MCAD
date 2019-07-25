@@ -56,7 +56,7 @@ function rotate_2dvector (rotate, coord) =
 
 /********************** Circel ***************************/
 
-function circel_area(r) = const_pi * r * r;
+function circel_area(r) = mcad_const_pi * r * r;
 
 function circel_radius3Points(a,b,c) = (distance2D(a,b) * distance2D(b,c) * distance2D(c,a)) / (4 * triangle_area3Points(a,b,c));
 
