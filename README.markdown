@@ -64,7 +64,7 @@ Very generally useful functions and constants:
 * curves.scad: mathematical functions defining curves
 * units.scad: easy metric units
 * utilities.scad: geometric funtions and misc. useful stuff
-* teardrop.scad (http://www.thingiverse.com/thing:3457): parametric teardrop module
+* teardrop.scad ![teardrop examples](/doc/teardrop_examples.png): parametric teardrop module
 * shapes.scad: DEPRECATED simple shapes by Catarina Mota
 * polyholes.scad: holes that should come out well when printed
 
