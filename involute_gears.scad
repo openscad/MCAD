@@ -94,7 +94,9 @@ module bevel_gear (
 	gear_thickness = 15,
 	backlash = 0,
 	involute_facets=0,
-	finish = -1)
+	finish = -1,
+	real_teeth=0
+	)
 {
 	echo ("bevel_gear",
 		"teeth", number_of_teeth,
@@ -114,8 +116,11 @@ module bevel_gear (
 	// The height of the pitch apex.
 	pitch_apex = sqrt (pow (cone_distance, 2) - pow (outside_pitch_radius, 2));
 	pitch_angle = asin (outside_pitch_radius/cone_distance);
-
-	echo ("Num Teeth:", number_of_teeth, " Pitch Angle:", pitch_angle);
+	
+	// Some control on real teeth value (if 0 we use number_of_teeth value)
+	real_teeth = real_teeth == 0 || real_teeth > number_of_teeth ? number_of_teeth : real_teeth;
+	
+	echo ("Num Teeth:", number_of_teeth, " Pitch Angle:", pitch_angle, "Real teeth: ",real_teeth);
 
 	finish = (finish != -1) ? finish : (pitch_angle < 45) ? bevel_gear_flat : bevel_gear_back_cone;
 
@@ -176,8 +181,9 @@ module bevel_gear (
 				rotate (half_thick_angle)
 				translate ([0,0,pitch_apex-apex_to_apex])
 				cylinder ($fn=number_of_teeth*2, r1=root_cone_full_radius,r2=0,h=apex_to_apex);
-				for (i = [1:number_of_teeth])
-//				for (i = [1:1])
+				
+				
+				for (i = [1:real_teeth])
 				{
 					rotate ([0,0,i*360/number_of_teeth])
 					{
@@ -308,7 +314,9 @@ module gear (
 	backlash=0,
 	twist=0,
 	involute_facets=0,
-	flat=false)
+	flat=false,
+	real_teeth=0
+	)
 {
 	if (circular_pitch==false && diametral_pitch==false)
 		echo("MCAD ERROR: gear module needs either a diametral_pitch or circular_pitch");
@@ -319,6 +327,7 @@ module gear (
 	// Pitch diameter: Diameter of pitch circle.
 	pitch_diameter  =  number_of_teeth * circular_pitch / 180;
 	pitch_radius = pitch_diameter/2;
+	
 	echo ("Teeth:", number_of_teeth, " Pitch radius:", pitch_radius);
 
 	// Base Circle
@@ -368,7 +377,9 @@ module gear (
 					base_radius = base_radius,
 					outer_radius = outer_radius,
 					half_thick_angle = half_thick_angle,
-					involute_facets=involute_facets);
+					involute_facets=involute_facets,
+					real_teeth=real_teeth
+				);
 
 				if (flat == false && gear_thickness < rim_thickness)
 					translate ([0,0,gear_thickness])
@@ -456,13 +467,18 @@ module gear_shape (
 	base_radius,
 	outer_radius,
 	half_thick_angle,
-	involute_facets)
+	involute_facets,
+	real_teeth=0
+	)
 {
+	// Some control on real teeth value (if 0 we use number_of_teeth value)
+	real_teeth = real_teeth == 0 || real_teeth > number_of_teeth ? number_of_teeth : real_teeth;
+	
 	union()
 	{
 		rotate (half_thick_angle) circle ($fn=number_of_teeth*2, r=root_radius);
 
-		for (i = [1:number_of_teeth])
+		for (i = [1:real_teeth])
 		{
 			rotate ([0,0,i*360/number_of_teeth])
 			{
