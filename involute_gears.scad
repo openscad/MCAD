@@ -400,11 +400,11 @@ module linear_exturde_flat_option(flat =false, height = 10, center = false, conv
 {
 	if(flat==false)
 	{
-		linear_extrude(height = height, center = center, convexity = convexity, twist= twist) child(0);
+		linear_extrude(height = height, center = center, convexity = convexity, twist= twist) children(0);
 	}
 	else
 	{
-		child(0);
+		children(0);
 	}
 
 }
@@ -460,11 +460,11 @@ module involute_gear_tooth (
 	union ()
 	{
 		for (i=[1:res])
-		assign (
+		let (
 			point1=involute (base_radius,start_angle+(stop_angle - start_angle)*(i-1)/res),
 			point2=involute (base_radius,start_angle+(stop_angle - start_angle)*i/res))
 		{
-			assign (
+			let (
 				side1_point1=rotate_point (centre_angle, point1),
 				side1_point2=rotate_point (centre_angle, point2),
 				side2_point1=mirror_point (rotate_point (centre_angle, point1)),
@@ -695,4 +695,3 @@ module test_backlash ()
 	translate([0,0,-5])
 	cylinder ($fn=20,r=backlash / 4,h=25);
 }
-
