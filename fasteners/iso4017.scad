@@ -14,9 +14,9 @@ $fn = 36;
 module iso_hexagon_head_screw(diameter, length, grade = "A", tolerance = false)
 {
 	dimensions = iso_hexagon_head_screw_dimensions(diameter);
-	hex_side_nom = dimensions[18] / const_sqrt3;
-	hex_side_grade_a = dimensions[19] / const_sqrt3;
-	hex_side_grade_b = dimensions[20] / const_sqrt3;
+	hex_side_nom = dimensions[18] / mcad_const_sqrt3;
+	hex_side_grade_a = dimensions[19] / mcad_const_sqrt3;
+	hex_side_grade_b = dimensions[20] / mcad_const_sqrt3;
 
 	echo(dimensions);
 	echo(dimensions[8] / 2, hex_side_nom);
