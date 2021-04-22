@@ -25,8 +25,8 @@ module test_bearing(){
 
 module test_bearing_hole(){
     difference(){
-      translate([0, 0, 3.5]) cube(size=[30, 30, 7-10*epsilon], center=true);
-      bearing(outline=true);
+      cube(size=[30, 30, 7-10*epsilon], center=true);
+      bearing(outline=true, center=true);
     }
 }
 
@@ -106,7 +106,7 @@ function bearingInnerDiameter(model) = bearingDimensions(model)[BEARING_INNER_DI
 function bearingOuterDiameter(model) = bearingDimensions(model)[BEARING_OUTER_DIAMETER];
 
 module bearing(pos=[0,0,0], angle=[0,0,0], model=SkateBearing, outline=false,
-                material=Steel, sideMaterial=Brass) {
+                material=Steel, sideMaterial=Brass, center=false) {
   // Common bearing names
   model =
     model == "Skate" ? 608 :
@@ -124,24 +124,24 @@ module bearing(pos=[0,0,0], angle=[0,0,0], model=SkateBearing, outline=false,
     color(material)
       difference() {
         // Basic ring
-        Ring([0,0,0], outerD, innerD, w, material, material);
+        Ring([0,0,0], outerD, innerD, w, material, material, center);
 
         if (outline==false) {
           // Side shields
-          Ring([0,0,-epsilon], outerRim, innerRim, epsilon+midSink, sideMaterial, material);
-          Ring([0,0,w-midSink], outerRim, innerRim, epsilon+midSink, sideMaterial, material);
+          Ring([0,0,-epsilon], outerRim, innerRim, epsilon+midSink, sideMaterial, material, center);
+          Ring([0,0,w-midSink], outerRim, innerRim, epsilon+midSink, sideMaterial, material, center);
         }
       }
   }
 
-  module Ring(pos, od, id, h, material, holeMaterial) {
+  module Ring(pos, od, id, h, material, holeMaterial, center) {
     color(material) {
       translate(pos)
         difference() {
-          cylinder(r=od/2, h=h,  $fs = 0.01);
+          cylinder(r=od/2, h=h,  $fs = 0.01, center=center);
           color(holeMaterial)
             translate([0,0,-10*epsilon])
-              cylinder(r=id/2, h=h+20*epsilon,  $fs = 0.01);
+              cylinder(r=id/2, h=h+20*epsilon,  $fs = 0.01, center=center);
         }
     }
   }
