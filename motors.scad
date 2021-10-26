@@ -51,7 +51,7 @@ module _stepper_motor_mount(
 	bolt_hole_size,
 	bolt_hole_distance,
 	slide_distance = 0,
-	motor_length = 40, //arbitray - not standardized
+	motor_length = 40, //arbitrary - not standardized
 	mochup,
 	tolerance = 0
 )

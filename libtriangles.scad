@@ -1,6 +1,9 @@
 //Copyright (C) 2013 Alex Davies
 //License: LGPL 2.1 or later
-//todo, make library work with negative lengths by adding triangles to the inside of every surface. basicaly copy and paste the current triangles set and reverse the first and last digit of every triangle. In 4 character traingles switcht the middle ones around as well. Not sure if that' actually useful though.
+//todo, make library work with negative lengths by adding triangles to the inside of every surface.
+//      basically copy and paste the current triangles set and reverse the first and last digit of
+//      every triangle. In 4 character triangles switch the middle ones around as well.
+//      Not sure if that's actually useful though.
 
 module rightpyramid(rightpyramidx, rightpyramidy, rightpyramidz) {
 	polyhedron ( points = [[0,0,0], 

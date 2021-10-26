@@ -18,9 +18,9 @@
 // ================================================================
 //
 //	File providing functions and modules to draw 3D - triangles 
-//	created in the X-Y plane with hight h, using various triangle 
+//	created in the X-Y plane with height h, using various triangle 
 //	specification methods. 
-//	Standard traingle geometrical definition  is used. Vertices are named A,B,C, 
+//	Standard triangle geometrical definition  is used. Vertices are named A,B,C, 
 //	side a is opposite vertex A a.s.o. the angle at vertex A is named alpha, 
 //	B(beta), C(gamma).
 //
@@ -41,7 +41,7 @@
 //		Enter triangle sides a,b,c and to get the A,B,C - corner
 // 		co-ordinates. The trinagle's c-side lies on the x-axis
 // 		and A-corner in the co-ordinates center [0,0,0]. Geometry rules
-//		required that a + b is greater then c.  The traingle's vertices are
+//		required that a + b is greater then c.  The triangle's vertices are
 //		computed such that it is located in the X-Y plane,  side c is on the 
 //		positive x-axis. 
 //	PARAMETER:
@@ -53,7 +53,7 @@
 //
 //	COMMENT:
 //		vertices = 3dtri_sides2coord (3,4,5);
-//		vertices[0] : Acord	vertex A cordinates the like [x,y,z] 
+//		vertices[0] : Acord	vertex A coordinates the like [x,y,z] 
 // -------------------------------------------------------------------------------------	
 //
 function 3dtri_sides2coord (a,b,c) = [
@@ -231,7 +231,7 @@ polyhedron (points=[Acord,Bcord,Ccord,
 //		Draw a round corner triangle with A,B,C - vertices specified by its 
 // 		co-ordinates, height h and round vertices having radius "r".
 //		As specified by the input parameters.
-//		Please note, the tringles side lenght gets extended by "2 * r",
+//		Please note, the tringles side length gets extended by "2 * r",
 //		and the vertices coordinates define the centers of the 
 //		circles with radius "r". 
 //	PARAMETER:

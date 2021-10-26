@@ -38,41 +38,41 @@ module Cubic_and_Radial_Array_Test()
 			cylinder(h=10,r=.5,center=true);
 		}
 
-//a linear array allong x can be derived from the cubic array simply 
+//a linear array along x can be derived from the cubic array simply
 	translate([60,0,0])
    Cubic_Array(10,0,0,5,1,1,center=false)
 		{
 		cube([5,5,5],center=true);
-		} 
-//a linear array allong y can be derived from the cubic array simply 
+		}
+//a linear array along y can be derived from the cubic array simply
 	translate([0,60,0])
    Cubic_Array(0,10,0,1,5,1,center=false)
 		{
 		cube([5,5,5],center=true);
-		} 
+		}
 
-//a linear array allong z can be derived from the cubic array simply 
+//a linear array along z can be derived from the cubic array simply
 	translate([0,0,60])
    Cubic_Array(0,0,10,1,1,5,center=false)
 		{
 		cube([5,5,5],center=true);
-		} 
+		}
 
-//a grid  array allong x,y can be derived from the cubic array simply 
+//a grid array along x,y can be derived from the cubic array simply
 	translate([0,0,-60])
    Cubic_Array(10,10,0,5,5,1,center=true)
 		{
 		cube([5,5,5],center=true);
-		} 
+		}
 
-//radial array of 32 objects rotated though 10 degrees 
+//radial array of 32 objects rotated though 10 degrees
  	translate([0,0,0])
  	Radial_Array(10,32,40)
 		{
 		cube([2,4,6],center=true);
 		}
 
-// a radial array of linear arrays 
+// a radial array of linear arrays
 
  	rotate([45,45,45])
   	Radial_Array(10,36,40)

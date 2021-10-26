@@ -63,7 +63,7 @@ Very generally useful functions and constants:
 * constants.scad: mathematical constants
 * curves.scad: mathematical functions defining curves
 * units.scad: easy metric units
-* utilities.scad: geometric funtions and misc. useful stuff
+* utilities.scad: geometric functions and misc. useful stuff
 * teardrop.scad (http://www.thingiverse.com/thing:3457): parametric teardrop module
 * shapes.scad: DEPRECATED simple shapes by Catarina Mota
 * polyholes.scad: holes that should come out well when printed
@@ -96,7 +96,7 @@ External utils that generate and process openscad code:
 ## Development ##
 
 You are welcome to fork this project in github and request pulls. I will try to
-accomodate the community as much as possible in this. If for some reason you
+accommodate the community as much as possible in this. If for some reason you
 want collaborator access, just ask.
 
 Github is fun (and easy), but I can include code submissions and other

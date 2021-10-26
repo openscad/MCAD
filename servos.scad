@@ -59,7 +59,7 @@ module towerprosg90(position=undef, rotation=undef, screws = 0, axle_length = 0,
  * @param vector position The position vector
  * @param vector rotation The rotation vector
  * @param boolean screws If defined then "screws" will be added and when the module is differenced() from something if will have holes for the screws
- * @param number axle_lenght If defined this will draw "backgound" indicator for the main axle
+ * @param number axle_lenght If defined this will draw "background" indicator for the main axle
  */
 module alignds420(position, rotation, screws = 0, axle_lenght = 0)
 {
