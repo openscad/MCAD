@@ -3,6 +3,20 @@
 // Author: Andrew Plumb
 // License: LGPL 2.1
 
+/*Example
+
+
+polytext(charstring="openSCAD",size=4,font=8bit_polyfont(),line=+0,justify=1,align=-1
+	,bold=false,bold_width=0.2,bold_resolution=30
+	,underline=false,underline_start=[0,0],underline_width=1.0
+	,outline=false,outline_width=0.2,outline_resolution=15
+	,strike=false,strike_start=[-0.5,0],strike_width=1.0
+	) ;
+     
+braille_ascii_spec800(inString="openSCAD",dot_backing=true,cell_backing=false,justify=1,align=-1,dot_h=0.48,dot_d=1.44,dot_spacing=2.340,cell_d2d_spacing=6.2, line_d2d_spacing=10.0, echo_translate=true) ; 
+
+*/ 
+
 module outline_2d(outline,points,paths,width=0.1,resolution=8) {
   if(outline && resolution > 4) {
     for(j=[0:len(paths)-1]) union() {
