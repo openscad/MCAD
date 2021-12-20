@@ -296,7 +296,10 @@ module involute_bevel_gear_tooth (
 module gear (
     number_of_teeth=15,
     circular_pitch=undef, diametral_pitch=undef,
+    tooth_profile="involute",
+    tooth_height=undef,
     pressure_angle=28,
+    describing_diameter=undef,
     clearance = undef,
     gear_thickness=5,
     rim_thickness=undef,
@@ -314,57 +317,66 @@ module gear (
     circle_diameter=undef,
     backlash=0,
     twist=0,
-    involute_facets=0,
+    involute_facets=undef,
+    tooth_facets=undef,
     flat=false)
 {
-    // Check for undefined circular pitch (happens when neither circular_pitch or diametral_pitch are specified)
-    if (circular_pitch==undef)
+    centered_gear = (flat == true)? true : centered_gear;
+    centered_hub = (flat == true)? true : centered_hub;
+   
+    // Check for undefined pitch (happens when neither circular_pitch or diametral_pitch are specified)
+    if (circular_pitch==undef && diametral_pitch == undef)
         echo("MCAD ERROR: gear module needs either a diametral_pitch or circular_pitch");
 
     //Convert diametrial pitch to our native circular pitch
     circular_pitch = (circular_pitch!=undef?circular_pitch:pi/diametral_pitch);
+    diametral_pitch = pi/circular_pitch;
+    module_pitch = circular_pitch/pi;
 
-    // Calculate default clearance if not specified
-    clearance = (clearance!=undef?clearance:0.25 * circular_pitch / pi);
-
+    
     // Pitch diameter: Diameter of pitch circle.
     pitch_diameter  =  number_of_teeth * circular_pitch / pi;
     pitch_radius = pitch_diameter/2;
-    echo (str("Teeth: ", number_of_teeth, ", Pitch Radius: ", pitch_radius, ", Clearance: ", clearance));
-
+    
+    //describing_diameter, for cycloidal (clock) gears, diameter of the describing circle
+    describing_radius = (describing_diameter == undef)? (5/8) * diametral_pitch/2 : describing_diameter/2;
+    
     // Base Circle
     base_radius = pitch_radius*cos(pressure_angle);
 
-    // Diametrial pitch: Number of teeth per unit length.
-    pitch_diametrial = number_of_teeth / pitch_diameter;
-
-    // Addendum: Radial distance from pitch circle to outside circle.
-    addendum = 1/pitch_diametrial;
+    // Addendum and dedendum are set by tooth height if specified, otherwise use ISO or JIS standard for involute gears
+    // addendum is height of tooth above pitch circle, dedendum is releif below pitch circle
+    // Calculate default clearance if not specified
+    clearance = (clearance!=undef?clearance:0.25 * module_pitch);
+    addendum = (tooth_height != undef)? tooth_height/2: (tooth_profile=="escapement")? 2* module_pitch : module_pitch;
+    // Dedendum: Radial distance from pitch circle to root diameter
+    dedendum = (tooth_height != undef)? tooth_height/2 + clearance:addendum + clearance;
 
     //Outer Circle
     outer_radius = pitch_radius+addendum;
 
-    // Dedendum: Radial distance from pitch circle to root diameter
-    dedendum = addendum + clearance;
-
     // Root diameter: Diameter of bottom of tooth spaces.
     root_radius = pitch_radius-dedendum;
+    
     backlash_angle = backlash / pitch_radius * 180 / pi;
     half_thick_angle = (360 / number_of_teeth - backlash_angle) / 4;
 
     // Variables controlling the rim.
-    rim_thickness = (rim_thickness!=undef?(rim_thickness!=0?rim_thickness:gear_thickness):gear_thickness * 1.5);
+    rim_thickness = (flat==true || rim_thickness == undef || rim_thickness == 0)? gear_thickness : rim_thickness;
+    //rim_thickness = (rim_thickness!=undef?(rim_thickness!=0?rim_thickness:gear_thickness):gear_thickness * 1.5);
     rim_width = (rim_width!=undef?rim_width:root_radius * .1);
     rim_radius = root_radius - rim_width;
 
     // Variables controlling the hub
-    hub_thickness = (hub_thickness!=undef?(hub_thickness!=0?hub_thickness:gear_thickness):gear_thickness * 2);
+    hub_thickness = (flat == true)? gear_thickness : (hub_thickness==undef || hub_thickness ==0)? gear_thickness * 2 : hub_thickness;
+    //hub_thickness = (hub_thickness!=undef?(hub_thickness!=0?hub_thickness:gear_thickness):gear_thickness * 2);
     hub_diameter = (hub_diameter!=undef?hub_diameter:root_radius * .3);
-    hub_base = (centered_hub == false)? 0 : rim_thickness/2 - hub_thickness/2;
+    hub_base = (centered_hub == false || flat == true)? 0 : rim_thickness/2 - hub_thickness/2;
 
     // Variables controlling the spokes
     spokes = spokes == undef? 0 : spokes;
-    spoke_thickness = (spoke_thickness == undef)? rim_thickness : spoke_thickness;
+    spoke_square = (flat == true)? true : spoke_square;
+    spoke_thickness = (flat == true || spoke_thickness == undef)? rim_thickness : spoke_thickness;
     spoke_width = (spokes==0)? 1 : (spoke_width == undef)?  0.75 * pi * hub_diameter / spokes : spoke_width; 
     //spoke_depth is depth spoke must penetrate into hub to ensure complete penetration
     spoke_depth = ((hub_diameter/2)^2-(spoke_width/2)^2)^0.5 +.01;
@@ -386,7 +398,15 @@ module gear (
         0.70*circle_orbit_curcumference/circles, 
         (rim_radius+hub_diameter/2)*0.9);
     circle_diameter=(circle_diameter != undef)? circle_diameter : circle_default_diameter;
-    echo(str("cir_orb_dia: ", circle_orbit_diameter, ", cir_orb_circumf: ", circle_orbit_curcumference, ", default cir dia: ",circle_default_diameter, ", cir_dia:",circle_diameter));
+    //echo(str("cir_orb_dia: ", circle_orbit_diameter, ", cir_orb_circumf: ", circle_orbit_curcumference, ", default cir dia: ",circle_default_diameter, ", cir_dia:",circle_diameter));
+    tooth_facets =(tooth_facets!=undef)? tooth_facets: ((involute_facets!=undef)? involute_facets : 10);
+    
+    
+    echo (str("Gear Type: ", tooth_profile, ", Teeth: ", number_of_teeth, ", Modulus: ", module_pitch, ", Pitch Radius: ", pitch_radius, ", Clearance: ", clearance));
+    echo (str("Rim Thicknesses: ", rim_thickness, ", Body Thickness: ", gear_thickness, ", hub_thickness: ", hub_thickness, ", hub_diameter: ", hub_diameter, ", bore_diameter: ", bore_diameter, ", flat: ", flat));
+    echo (str("Root Radius: ", root_radius,", Outer Radius: ", outer_radius,", Describing Radius: ", describing_radius,", Half Thck Ang: ", half_thick_angle));
+    
+
     difference()
     {
         union ()
@@ -397,19 +417,28 @@ module gear (
                 linear_extrude_flat_option(flat=flat, height=rim_thickness, convexity=10, twist=twist)
                 gear_shape (
                     number_of_teeth,
+                    tooth_profile=tooth_profile,
                     pitch_radius = pitch_radius,
                     root_radius = root_radius,
                     base_radius = base_radius,
                     outer_radius = outer_radius,
+                    describing_radius = describing_radius,
                     half_thick_angle = half_thick_angle,
-                    involute_facets=involute_facets);
+                    involute_facets=tooth_facets,
+                    tooth_facets=tooth_facets);
 
-                //if we have a 0 hub thickness, then hub must be removed
-                if (hub_thickness == 0)
-                    translate ([0,0,-1])
-                    cylinder (r=rim_radius,h=rim_thickness+2);
+                //if we have a 0 gear thickness, then gear body must be removed
+                if (gear_thickness == 0) {
+                    if (flat == true){
+                        circle (r=rim_radius);
+                    }
+                    else {
+                        translate ([0,0,-1])
+                        cylinder (r=rim_radius,h=rim_thickness+2);
+                    }
+                }
                 //if the rim is thicker than the gear, carve out gear body
-                else if (rim_thickness>gear_thickness){
+                else if (flat == false && rim_thickness>gear_thickness){
                     //if not centered, carve out only the top
                     if (centered_gear == false){
                         translate ([0,0,gear_thickness])
@@ -428,8 +457,8 @@ module gear (
                 }
             }
             
-            //extend the gear body if gear_thickness > rim_thickness unless spoked, 
-            if (gear_thickness > rim_thickness)
+            //extend the gear body if gear_thickness > rim_thickness 
+            if (flat == false && gear_thickness > rim_thickness)
             {
                 if (centered_gear == false)
                 {
@@ -452,26 +481,35 @@ module gear (
             //add in spokes
             if (spokes>0)
             {          
-                for(i=[0:spokes-1])
-                    translate([0,0,rim_thickness/2])
-                    rotate([90,0,i*360/spokes])
-                    translate([0,0,spoke_radius])
-                    {
-                        if (spoke_square==true){
-                             resize([spoke_width,spoke_thickness,spoke_length])
-                            translate([0,0,.5])
-                            cube(1,center=true);
-                        }
-                        if (spoke_square==false){
-                            resize([spoke_width,spoke_thickness,spoke_length])
-                            cylinder(h=10,d=10);
+                for(i=[0:spokes-1]){
+                    if (flat == true){
+                        rotate([0,0,i*360/spokes])
+                        {
+                            translate([spoke_radius + spoke_length/2.0,0,0])
+                            square([spoke_length,spoke_width],center=true);
                         }
                     }
+                    else {
+                        translate([0,0,rim_thickness/2])
+                        rotate([90,0,i*360/spokes])
+                        translate([0,0,spoke_radius])
+                        {
+                            if (spoke_square==true){
+                                resize([spoke_width,spoke_thickness,spoke_length])
+                                translate([0,0,.5])
+                                cube(1,center=true);
+                            }
+                            if (spoke_square==false){
+                                resize([spoke_width,spoke_thickness,spoke_length])
+                                cylinder(h=10,d=10);
+                            }
+                        }
+                    }
+                }
             }
         }
-        
         //remove the center bore
-        translate ([0,0,-1])
+        translate ([0,0,(flat == true)? 0 : hub_base -1])
         linear_extrude_flat_option(flat =flat, height=2+max(rim_thickness,hub_thickness,gear_thickness))
         circle (r=bore_diameter/2);
         
@@ -542,13 +580,19 @@ module linear_extrude_flat_option(flat =false, height = 10, center = false, conv
 
 module gear_shape (
     number_of_teeth,
+    tooth_profile="involute",
     pitch_radius,
     root_radius,
     base_radius,
     outer_radius,
+    describing_radius,
     half_thick_angle,
-    involute_facets)
+    involute_facets,
+    tooth_facets)
 {
+    //involute facets is kept for backwards compatability. If specified, and tooth_facets is not, then use involute facets
+    tooth_facets = (involute_facets != 0 && tooth_facets == 0)? involute_facets : tooth_facets;
+    
     union()
     {
         rotate (half_thick_angle) circle ($fn=number_of_teeth*2, r=root_radius);
@@ -557,16 +601,136 @@ module gear_shape (
         {
             rotate ([0,0,i*360/number_of_teeth])
             {
-                involute_gear_tooth (
-                    pitch_radius = pitch_radius,
-                    root_radius = root_radius,
-                    base_radius = base_radius,
-                    outer_radius = outer_radius,
-                    half_thick_angle = half_thick_angle,
-                    involute_facets=involute_facets);
+                if (tooth_profile == "involute")
+                {
+                    involute_gear_tooth (
+                        pitch_radius = pitch_radius,
+                        root_radius = root_radius,
+                        base_radius = base_radius,
+                        outer_radius = outer_radius,
+                        half_thick_angle = half_thick_angle,
+                        involute_facets=tooth_facets);
+                } 
+                if (tooth_profile=="cycloidal")
+                {
+                    cycloidal_gear_tooth (
+                        pitch_radius = pitch_radius,
+                        root_radius = root_radius,
+                        outer_radius = outer_radius,
+                        describing_radius = describing_radius,
+                        half_thick_angle = half_thick_angle,
+                        tooth_facets=tooth_facets);
+                }
+                if (tooth_profile=="escapement")
+                {
+                    escapement_gear_tooth (
+                        root_radius = root_radius,
+                        outer_radius = outer_radius,
+                        half_thick_angle = half_thick_angle);
+                }
+                if (tooth_profile=="triangle")
+                {
+                    triangle_gear_tooth (
+                        root_radius = root_radius,
+                        outer_radius = outer_radius,
+                        half_thick_angle = half_thick_angle);
+                }
             }
         }
     }
+}
+
+module triangle_gear_tooth (
+    root_radius,
+    outer_radius,
+    half_thick_angle)
+{
+    //the triangle teeth have no spacing between teeth, so their half thick angle is twice that of other teeth.
+    half_angle = half_thick_angle*2;
+    point1=[root_radius*cos(half_angle),root_radius*sin(half_angle)];
+    point2=mirror_point(point1);
+    point3=[outer_radius,0];
+    polygon ( points=[point1,point2,point3], paths=[[0,1,2,0]] );
+}
+
+module escapement_gear_tooth (
+    root_radius,
+    outer_radius,
+    half_thick_angle)
+{
+    point1=[root_radius*cos(half_thick_angle),root_radius*sin(half_thick_angle)];
+    point2=mirror_point(point1);
+    point3=[outer_radius*cos(half_thick_angle),outer_radius*sin(half_thick_angle)];
+    polygon ( points=[point1,point2,point3], paths=[[0,1,2,0]] );
+}
+
+module cycloidal_gear_tooth (
+    pitch_radius,
+    root_radius,
+    outer_radius,
+    describing_radius,
+    half_thick_angle,
+    tooth_facets,
+    verbose = false)
+{
+
+    res=(tooth_facets!=0)?tooth_facets:($fn==0)?5:$fn/4;
+
+    union ()
+    {
+        max_angle = cycloidal_lift_angle(describing_radius,outer_radius-pitch_radius);
+        if (verbose == true)
+        {
+            echo(str("cycloidal tooth, max angle=",max_angle));
+        }
+        
+        for (i=[1:res])
+        {
+            phi_1   = 1.2*max_angle* (i-1)/res;
+            psi_1   = phi_1*describing_radius/pitch_radius;
+            int_point_1 = rotate_about_a_point(half_thick_angle+psi_1,[0,0],
+                        rotate_about_a_point(-phi_1,[pitch_radius-describing_radius,0],[pitch_radius,0]));
+            ext_point_1 = rotate_about_a_point(half_thick_angle-psi_1,[0,0],
+                        rotate_about_a_point(-phi_1,[pitch_radius+describing_radius,0],[pitch_radius,0]));
+            phi_2   = 1.2*max_angle* i/res;
+            psi_2   = phi_2*describing_radius/pitch_radius;
+            int_point_2 = rotate_about_a_point(half_thick_angle+psi_2,[0,0],
+                        rotate_about_a_point(-phi_2,[pitch_radius-describing_radius,0],[pitch_radius,0]));
+            ext_point_2 = rotate_about_a_point(half_thick_angle-psi_2,[0,0],
+                        rotate_about_a_point(-phi_2,[pitch_radius+describing_radius,0],[pitch_radius,0]));
+            int_point_3 = mirror_point ( int_point_2);
+            int_point_4 = mirror_point ( int_point_1);
+            ext_point_3 = mirror_point ( ext_point_2);
+            ext_point_4 = mirror_point ( ext_point_1);
+            if (verbose == true)
+            {
+                echo(str("phi_1: ",phi_1,", psi_1: ",psi_1,", int point 1: ", int_point_1, ", ext point 1: ", ext_point_1));
+                echo(str("phi_2: ",phi_2,", psi_2: ",psi_2,", int point 2: ", int_point_2, ", ext point 2: ", ext_point_2));
+            }
+            union() 
+            {
+                //if ((atan2(int_point_2[1],int_point_2[0]) <= 2*half_thick_angle) && (hypotenuse_length(int_point_2)>= root_radius))
+                //{
+                    polygon (
+                        points=[[0,0],int_point_1,int_point_2,int_point_3,int_point_4],
+                        paths=[[0,2,1,4,3,0]]);
+                    //echo(str("interior facet i=",i,", ",int_point_1," ",int_point_2," ",int_point_3," ",int_point_4));
+                //}
+                //else
+                //    echo(str("not interior facet i=",i,", ",int_point_1," ",int_point_2," ",int_point_3," ",int_point_4));
+                if ((ext_point_2[1] > 0) && (hypotenuse_length(ext_point_2) <= outer_radius))
+                {
+                    polygon (
+                        points=[[0,0],ext_point_1,ext_point_2,ext_point_3,ext_point_4],
+                        paths=[[0,1,2,3,4,0]]);
+                    //echo(str("exterior facet i=",i,", ",ext_point_1," ",ext_point_2," ",ext_point_3," ",ext_point_4));
+                }
+                //else
+                //    echo(str("not exterior facet i=",i,", ",ext_point_1," ",ext_point_2," ",ext_point_3," ",ext_point_4));
+            }
+        }
+    }
+
 }
 
 module involute_gear_tooth (
@@ -620,12 +784,19 @@ function rotated_involute (rotate, base_radius, involute_angle) =
     cos (rotate) * involute (base_radius, involute_angle)[1] - sin (rotate) * involute (base_radius, involute_angle)[0]
 ];
 
-function mirror_point (coord) =
-[
-    coord[0],
-    -coord[1]
-];
+function rotate_about_a_point (angle,center,point)=
+    //rotates point about the center by angle
+    rectangular(polar(point-center) + [0,angle]) + center;
 
+//rectangular and polar conversions, rect=[x,t], polar=[r,a]
+function polar(rect) = [hypotenuse_length(rect),atan2(rect[1],rect[0])];
+function rectangular(polar) = [polar[0]*cos(polar[1]),polar[0]*sin(polar[1])] ;
+function hypotenuse_length(rect) = sqrt(pow(rect[0],2)+pow(rect[1],2));
+
+function mirror_point (coord) =
+    [ coord[0],  -coord[1] ];
+
+//note: this rotates in clockwise direction counter to convention
 function rotate_point (rotate, coord) =
 [
     cos (rotate) * coord[0] + sin (rotate) * coord[1],
@@ -637,6 +808,21 @@ function involute (base_radius, involute_angle) =
     base_radius*(cos (involute_angle) + involute_angle*pi/180*sin (involute_angle)),
     base_radius*(sin (involute_angle) - involute_angle*pi/180*cos (involute_angle))
 ];
+
+function cycloidal_lift_angle(describing_radius,addendum) =
+        //Estimate how far to rotate the describing circle for the
+        //  tracing point to reach the addendum height
+        //This is an estimate that is greater than the actual angle
+        //also, limit to 180 degrees if the tracing point will not reach the addendum
+        //describing_radius*(1-cos(phi)) ~= addendum
+        // phi ~= acos(1-addendum/describing_radius)
+        (addendum>2*describing_radius)? 180 : acos(1-addendum/describing_radius);
+        
+//function cycloidal_describing_rotaion(lift_angle,describing_radius,pitch_radius) =
+        //if the describing radius needed to rotate in place by lift_angle, without slipage, then the center of the describing circle
+        // must rotate psi= -phi*describing_radius/pitch_radius
+        //-lift_angle*describing_radius/pitch_radius;
+        
 
 
 // Test Cases
