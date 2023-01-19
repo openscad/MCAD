@@ -315,7 +315,9 @@ module gear (
     backlash=0,
     twist=0,
     involute_facets=0,
-    flat=false)
+    flat=false,
+    helix_angle=undef,
+    number_of_hidden_teeth=0)
 {
     // Check for undefined circular pitch (happens when neither circular_pitch or diametral_pitch are specified)
     if (circular_pitch==undef)
@@ -356,6 +358,9 @@ module gear (
     rim_thickness = (rim_thickness!=undef?(rim_thickness!=0?rim_thickness:gear_thickness):gear_thickness * 1.5);
     rim_width = (rim_width!=undef?rim_width:root_radius * .1);
     rim_radius = root_radius - rim_width;
+
+    // Convert helix_angle to twist
+    twist = (helix_angle!=undef?180/pi*rim_thickness/(pitch_radius*tan(90-helix_angle)):twist);
 
     // Variables controlling the hub
     hub_thickness = (hub_thickness!=undef?(hub_thickness!=0?hub_thickness:gear_thickness):gear_thickness * 2);
@@ -402,7 +407,8 @@ module gear (
                     base_radius = base_radius,
                     outer_radius = outer_radius,
                     half_thick_angle = half_thick_angle,
-                    involute_facets=involute_facets);
+                    involute_facets=involute_facets,
+                    number_of_hidden_teeth = number_of_hidden_teeth);
 
                 //if we have a 0 hub thickness, then hub must be removed
                 if (hub_thickness == 0)
@@ -494,7 +500,8 @@ module rack(
         clearance=0.2,
         rim_thickness=8,
         rim_width=5,
-        flat=false)
+        flat=false,
+        helix_angle=0)
 {
 
     if (circular_pitch==false && diametral_pitch==false)
@@ -508,23 +515,41 @@ module rack(
     dedendum = addendum + clearance;
     pitch_slope = tan(pressure_angle);
 
-    linear_extrude_flat_option(flat=flat, height=rim_thickness)
-        union()
-        {
-            translate([0,-dedendum-rim_width/2])
-                square([number_of_teeth*pitch, rim_width],center=true);
+    module profile() {
+        translate([0,-dedendum-rim_width/2])
+            square([number_of_teeth*pitch, rim_width],center=true);
 
-            p1 = pitch / 4 + pitch_slope * dedendum;
-            p2 = pitch / 4 - pitch_slope * addendum;
-            for(i=[1:number_of_teeth])
-                translate([pitch*(i-number_of_teeth/2-0.5),0])
-                    polygon(points=[
-                            [-p1,-dedendum],
-                            [p1,-dedendum],
-                            [p2,addendum],
-                            [-p2,addendum]
+         p1 = pitch / 4 + pitch_slope * dedendum;
+         p2 = pitch / 4 - pitch_slope * addendum;
+         for(i=[1:number_of_teeth])
+             translate([pitch*(i-number_of_teeth/2-0.5),0])
+                 polygon(points=[
+                        [-p1,-dedendum],
+                        [p1,-dedendum],
+                        [p2,addendum],
+                        [-p2,addendum]
                     ]);
+    }
+
+    if (flat) {
+        profile();
+    } else {
+        // Helical helper variables
+        length = pitch * number_of_teeth;
+        height = rim_thickness + length*abs(tan(helix_angle));
+        x = length + rim_thickness*abs(tan(helix_angle));
+        intersection() {
+            translate([0,0,rim_thickness/2]) // Translate back to original baseline
+            rotate([0,helix_angle,0])        // Rotate with helix angle
+            translate([0,0,-height/2])       // Rotation around middle of extrusion
+            linear_extrude(height=height) {
+                rotate([0,-helix_angle,0])   // Adjust profile to helix angle
+                profile();
+            }
+            // Clip extrusion to rim height
+            translate([-x/2,-dedendum-rim_width, 0]) cube([x, rim_width+dedendum+addendum, rim_thickness]);
         }
+    }
 }
 
 module linear_extrude_flat_option(flat =false, height = 10, center = false, convexity = 2, twist = 0)
@@ -547,13 +572,14 @@ module gear_shape (
     base_radius,
     outer_radius,
     half_thick_angle,
-    involute_facets)
+    involute_facets,
+    number_of_hidden_teeth=0)
 {
     union()
     {
         rotate (half_thick_angle) circle ($fn=number_of_teeth*2, r=root_radius);
 
-        for (i = [1:number_of_teeth])
+        for (i = [1:1:number_of_teeth-number_of_hidden_teeth])
         {
             rotate ([0,0,i*360/number_of_teeth])
             {
@@ -845,3 +871,31 @@ module test_backlash ()
     cylinder ($fn=20,r=backlash / 4,h=25);
 }
 
+module test_helix_rack_and_gear_with_hidden_teeth() {
+    pitch = 5;
+    pressure_angle = 20;
+    helix_angle = 30;
+    rim_thickness = 10;
+    module helical_gear() {
+        translate([0,20*pitch/pi/2, 0]) rotate([0,0,-60])
+        gear (number_of_teeth=20,
+              number_of_hidden_teeth=15,
+              circular_pitch=pitch,
+              pressure_angle=pressure_angle,
+              rim_thickness=rim_thickness,
+              helix_angle=helix_angle);
+    }
+    module helical_rack() {
+        rack(number_of_teeth=10,
+             circular_pitch=pitch,
+             pressure_angle=pressure_angle,
+             rim_thickness=rim_thickness,
+             helix_angle=-helix_angle);
+   }
+   helical_gear();
+   helical_rack();
+   mirror([0,0,1]) {
+       helical_gear();
+       helical_rack();
+   }
+}
