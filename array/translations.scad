@@ -45,7 +45,7 @@ function mcad_generate_grid (grid_size, separation, center = false) = (
         center = is_bool(center) ? [center, center, center] : center,
 
         center_offset = [
-            for (i = [0:len(g)])
+            for (i = [0:len(g) - 1])
                 (center[i]) ? (g[i] - 1) * sep[i] / 2 : 0
         ]
     )
