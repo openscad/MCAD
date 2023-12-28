@@ -188,6 +188,21 @@ module roundedSquare(pos=[10, 10], r=2) {
 	}
 }
 
+module mcad_rounded_square (size, r, center)
+{
+    center = (!is_list(center)) ? [center, center] : center;
+    size = (!is_list(size)) ? [size, size] : size;
+
+    function get_offset (i) = center[i] ? 0 : size[i] / 2;
+
+    translate ([get_offset (0), get_offset (1)])
+    hull()
+    for (x = [1, -1] * (size[0] / 2 - r))
+    for (y = [1, -1] * (size[1] / 2 - r))
+    translate([x, y])
+    circle(r);
+}
+
 module csquare (size, center = false)
 {
     center = (!is_list(center)) ? [center, center] : center;
