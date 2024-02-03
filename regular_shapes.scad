@@ -253,7 +253,7 @@ module egg(width, length){
     rotate_extrude()
         difference(){
             egg_outline(width, length);
-            translate([-length, 0, 0]) cube(2*length, center=true);
+            translate([-length, 0, 0]) square(2*length, center=true);
         }
 }
 
