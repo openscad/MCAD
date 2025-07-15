@@ -412,8 +412,8 @@ module gear (
                 else if (rim_thickness>gear_thickness){
                     //if not centered, carve out only the top
                     if (centered_gear == false){
-                        translate ([0,0,gear_thickness])
-                        cylinder (r=rim_radius,h=rim_thickness);
+                        translate ([0,0,gear_thickness-.1])
+                        cylinder (r=rim_radius,h=rim_thickness+.2);
                     }
                     else
                         //carve out half from top and half from bottom
