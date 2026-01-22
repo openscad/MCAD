@@ -40,8 +40,8 @@ module rack(cp, N, width, thickness){
 // width = width of rack
 // thickness = thickness of support under teeth (0 for no support)
 
-	a = 1.0*cp/const_pi; // addendum (also known as "module")
-	d = 1.1*cp/const_pi; // dedendum (this is set by a standard)
+	a = 1.0*cp/mcad_const_pi; // addendum (also known as "module")
+	d = 1.1*cp/mcad_const_pi; // dedendum (this is set by a standard)
 	height=(d+a);
 
 	// find the tangent of pressure angle once
@@ -86,14 +86,14 @@ module pinion (cp, N, width, shaft_diameter, backlash=0){
 	cp = (cp!=false?cp:180/diametral_pitch);
 
 	// Pitch diameter: Diameter of pitch circle.
-	pitch_diameter  =  N * cp / const_pi;
+	pitch_diameter  =  N * cp / mcad_const_pi;
 	pitch_radius = pitch_diameter/2;
 	echo ("Teeth:", N, " Pitch radius:", pitch_radius);
 	// Base Circle
 	base_radius = pitch_radius*cos(20);
 
 	// Addendum: Radial distance from pitch circle to outside circle.
-	addendum = cp/const_pi;
+	addendum = cp/mcad_const_pi;
 
 	//Outer Circle
 	outer_radius = pitch_radius+addendum;
@@ -104,7 +104,7 @@ module pinion (cp, N, width, shaft_diameter, backlash=0){
 	// Root diameter: Diameter of bottom of tooth spaces.
 	root_radius = pitch_radius-dedendum;
 
-	backlash_angle = backlash / pitch_radius * 180 / const_pi;
+	backlash_angle = backlash / pitch_radius * 180 / mcad_const_pi;
 	half_thick_angle = (360 / N - backlash_angle) / 4;
 
 	difference(){
@@ -168,7 +168,7 @@ module involute_pinion_tooth ( pitch_radius, root_radius, base_radius, outer_rad
 // Finds the angle of the involute about the base radius at the given distance (radius) from it's center.
 //source: http://www.mathhelpforum.com/math-help/geometry/136011-circle-involute-solving-y-any-given-x.html
 
-function involute_intersect_angle (base_radius, radius) = sqrt (pow (radius/base_radius, 2) - 1) * 180 / const_pi;
+function involute_intersect_angle (base_radius, radius) = sqrt (pow (radius/base_radius, 2) - 1) * 180 / mcad_const_pi;
 
 // Calculate the involute position for a given base radius and involute angle.
 
@@ -178,7 +178,7 @@ function mirror_point(coord)=[coord[0],-coord[1]];
 
 function rotate_point(rotate,coord)=[cos(rotate)*coord[0]+sin(rotate)*coord[1],cos(rotate)*coord[1]-sin(rotate)*coord[0]];
 
-function involute (base_radius, involute_angle)=[base_radius*(cos(involute_angle)+involute_angle*const_pi/180*sin(involute_angle)),base_radius*(sin(involute_angle)-involute_angle*const_pi/180*cos(involute_angle))];
+function involute (base_radius, involute_angle)=[base_radius*(cos(involute_angle)+involute_angle*mcad_const_pi/180*sin(involute_angle)),base_radius*(sin(involute_angle)-involute_angle*mcad_const_pi/180*cos(involute_angle))];
 
 
 

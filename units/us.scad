@@ -30,7 +30,7 @@
  */
 
 include <MCAD/units/metric.scad>
-
+include <MCAD/general/constants.scad>
 /*
  * Conversion to metric is defined by Roberts, R.W. (February 3, 1975).
  * Federal Register republished in Barbrow, L.E. and Judson, L. V. (1976)
@@ -38,7 +38,7 @@ include <MCAD/units/metric.scad>
  * Special Publication 447. p. 36
  * http://physics.nist.gov/Pubs/SP447/app9.pdf
  */
-length_inch = 25.4 * length_mm;
+length_inch = mcad_const_mm_per_inch * length_mm;
 function length_inch(quantity) = quantity * length_inch;
 
 length_in = length_inch;
